@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.arvin.entitys.ImageBean;
 import net.arvin.imagescan.R;
+import net.arvin.listeners.OnClickWithObject;
+import net.arvin.listeners.OnItemChecked;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -24,11 +27,17 @@ public class ImagesAdapter extends BaseAdapter {
 	private List<ImageBean> images;
 	private ImageLoader imageLoader;
 	private DisplayImageOptions options;
+	private OnItemChecked itemChecked;
+	private int maxNum, selectedNum;
 
-	public ImagesAdapter(Context mContext, List<ImageBean> images) {
+	public ImagesAdapter(Context mContext, List<ImageBean> images,
+			OnItemChecked itemChecked, int maxNum) {
 		super();
 		this.mContext = mContext;
 		this.images = images;
+		this.itemChecked = itemChecked;
+		this.maxNum = maxNum;
+		this.selectedNum = 0;
 		initImageLoader(mContext);
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
@@ -39,7 +48,6 @@ public class ImagesAdapter extends BaseAdapter {
 	}
 
 	public void initImageLoader(Context context) {
-
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
@@ -66,7 +74,7 @@ public class ImagesAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(
@@ -81,6 +89,28 @@ public class ImagesAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		setData(holder, position);
+		holder.item_box.setOnClickListener(new OnClickWithObject(holder) {
+
+			@Override
+			public void onClick(View v, Object[] objs) {
+				if (images.get(position).isChecked()) {
+					selectedNum--;
+					images.get(position).setChecked(false);
+					itemChecked.onItemChecked(position, false);
+				} else {
+					if (selectedNum == maxNum) {
+						ViewHolder holder = (ViewHolder) objs[0];
+						holder.item_box.setChecked(false);
+						Toast.makeText(mContext, "超过选图数量最大上限了~",
+								Toast.LENGTH_SHORT).show();
+						return;
+					}
+					selectedNum++;
+					images.get(position).setChecked(true);
+					itemChecked.onItemChecked(position, true);
+				}
+			}
+		});
 		return convertView;
 	}
 

@@ -1,13 +1,63 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black" >
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/title_color" >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/alph_click_style"
+            android:contentDescription="@string/app_name"
+            android:padding="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back_white" />
+
+        <View
+            android:id="@+id/divider_line"
+            android:layout_width="@dimen/divider_middle"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/back"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/divider_line"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="图片"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_eighteen" />
+
+        <Button
+            android:id="@+id/choose_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_bg"
+            android:enabled="false"
+            android:padding="5dp"
+            android:text="完成"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_fifteen" >
+        </Button>
+    </RelativeLayout>
 
     <GridView
         android:id="@+id/image_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
         android:horizontalSpacing="1dp"
         android:numColumns="3"
         android:stretchMode="columnWidth"

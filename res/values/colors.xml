@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="title_color">#21282C</color>
+    <color name="buttom_color">#393B3A</color>
+    <color name="bg_color">#181919</color>
+    <color name="ensure_color">#44BF1A</color>
+    <color name="ensure_unenable_color">#337523</color>
+    <color name="text_enable_color">#828282</color>
+    <color name="text_color">#C7C7C7</color>
+</resources>
