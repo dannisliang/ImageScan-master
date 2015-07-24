@@ -5,5 +5,6 @@
     <dimen name="text_eighteen">18sp</dimen>
     <dimen name="divider_small">0.5dp</dimen>
     <dimen name="divider_middle">1dp</dimen>
+    <dimen name="bar_height_size">48dp</dimen>
 
 </resources>

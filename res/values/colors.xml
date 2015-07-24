@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="title_color">#21282C</color>
-    <color name="buttom_color">#393B3A</color>
+    <color name="buttom_color">#c0000000</color>
     <color name="bg_color">#181919</color>
     <color name="ensure_color">#44BF1A</color>
     <color name="ensure_unenable_color">#337523</color>

@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 @SuppressLint("HandlerLeak")
 public class SelectMultImagesActivity extends FragmentActivity implements
@@ -36,6 +37,7 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 	private ImagesAdapter mAdapter;
 	private Button chooseOk;
 	private int selectedMaxNum = 9;
+	private TextView review;
 	public static String RESPONSE_KEY = "response_key";
 
 	@Override
@@ -53,6 +55,7 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 	private void initView() {
 		imageGrid = (GridView) findViewById(R.id.image_grid);
 		chooseOk = (Button) findViewById(R.id.choose_ok);
+		review = (TextView) findViewById(R.id.review);
 	}
 
 	private void initNormalData() {
@@ -62,6 +65,7 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 	private void setListener() {
 		findViewById(R.id.back).setOnClickListener(this);
 		chooseOk.setOnClickListener(this);
+		review.setOnClickListener(this);
 	}
 
 	private void setGridView() {
@@ -133,6 +137,8 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 			setResult(RESULT_CANCELED);
 			finish();
 			break;
+		case R.id.review:
+			break;
 		}
 	}
 
@@ -157,10 +163,12 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 			chooseOk.setEnabled(true);
 			chooseOk.setTextColor(Color.WHITE);
 			chooseOk.setText(getString(R.string.chooseOk, num, selectedMaxNum));
+			review.setText(getString(R.string.review, num));
 		} else {
 			chooseOk.setEnabled(false);
 			chooseOk.setTextColor(getResources().getColor(R.color.text_color));
 			chooseOk.setText("ÕÍ≥…");
+			review.setText("‘§¿¿");
 		}
 	}
 

@@ -2,17 +2,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_enabled="false"><shape>
-            <corners android:radius="5dp" />
+            <corners android:radius="3dp" />
 
             <solid android:color="@color/ensure_unenable_color" />
         </shape></item>
     <item android:state_pressed="true"><shape>
-            <corners android:radius="5dp" />
+            <corners android:radius="3dp" />
 
             <solid android:color="@color/ensure_unenable_color" />
         </shape></item>
     <item android:state_enabled="true"><shape>
-            <corners android:radius="5dp" />
+            <corners android:radius="3dp" />
 
             <solid android:color="@color/ensure_color" />
         </shape></item>
