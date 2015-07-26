@@ -1,10 +1,13 @@
 package net.arvin.entitys;
 
+import java.util.List;
+
 public class ImageFileBean {
 	private String firstImagePath;
 	private int totalNum;
 	private String imageFileName;
-	private String imageFilePath;
+	private List<String> imageFiles;
+	private boolean isChekced;
 
 	public String getFirstImagePath() {
 		return firstImagePath;
@@ -30,18 +33,27 @@ public class ImageFileBean {
 		this.imageFileName = imageFileName;
 	}
 
-	public String getImageFilePath() {
-		return imageFilePath;
+	public List<String> getImageFiles() {
+		return imageFiles;
 	}
 
-	public void setImageFilePath(String imageFilePath) {
-		this.imageFilePath = imageFilePath;
+	public void setImageFiles(List<String> imageFiles) {
+		this.imageFiles = imageFiles;
+	}
+
+	public boolean isChekced() {
+		return isChekced;
+	}
+
+	public void setChekced(boolean isChekced) {
+		this.isChekced = isChekced;
 	}
 
 	@Override
 	public String toString() {
 		return "ImageFileBean [firstImagePath=" + firstImagePath
 				+ ", totalNum=" + totalNum + ", imageFileName=" + imageFileName
-				+ ", imageFilePath=" + imageFilePath + "]";
+				+ ", imageFiles=" + imageFiles + ", isChekced=" + isChekced
+				+ "]";
 	}
 }

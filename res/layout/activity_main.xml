@@ -51,7 +51,7 @@
             android:enabled="false"
             android:padding="5dp"
             android:text="完成"
-            android:textColor="@color/text_color"
+            android:textColor="@drawable/button_text_style"
             android:textSize="@dimen/text_fifteen" >
         </Button>
     </RelativeLayout>
@@ -67,6 +67,7 @@
         android:verticalSpacing="1dp" />
 
     <RelativeLayout
+        android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bar_height_size"
         android:layout_alignParentBottom="true"
@@ -75,18 +76,17 @@
         <TextView
             android:id="@+id/file_menu"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:paddingBottom="15dp"
+            android:layout_height="match_parent"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:paddingBottom="14dp"
             android:paddingTop="15dp"
             android:text="所有图片"
-            android:enabled="true"
+            android:clickable="true"
             android:gravity="bottom"
-            android:drawablePadding="5dp"
-            android:drawableRight="@drawable/select_more"
-            android:textColor="@drawable/text_enable"
+            android:drawablePadding="2dp"
+            android:drawableRight="@drawable/select_icon_enable"
+            android:textColor="@drawable/select_text_enable"
             android:textSize="@dimen/text_eighteen" />
         
 
@@ -96,12 +96,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingBottom="15dp"
+            android:paddingBottom="14dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="15dp"
             android:text="预览"
-            android:textColor="@color/text_color"
+            android:enabled="false"
+            android:textColor="@drawable/button_text_style"
             android:textSize="@dimen/text_eighteen" />
     </RelativeLayout>
 

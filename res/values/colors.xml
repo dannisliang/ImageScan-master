@@ -7,4 +7,5 @@
     <color name="ensure_unenable_color">#337523</color>
     <color name="text_enable_color">#828282</color>
     <color name="text_color">#C7C7C7</color>
+    <color name="transparent">#ffffffff</color>
 </resources>

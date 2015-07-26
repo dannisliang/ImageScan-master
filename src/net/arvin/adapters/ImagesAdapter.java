@@ -16,11 +16,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 public class ImagesAdapter extends BaseAdapter {
 	private Context mContext;
@@ -38,24 +35,12 @@ public class ImagesAdapter extends BaseAdapter {
 		this.itemChecked = itemChecked;
 		this.maxNum = maxNum;
 		this.selectedNum = 0;
-		initImageLoader(mContext);
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_launcher)
 				.showImageForEmptyUri(R.drawable.ic_launcher)
 				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565).build();
-	}
-
-	public void initImageLoader(Context context) {
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				context).threadPriority(Thread.NORM_PRIORITY - 2)
-				.denyCacheImageMultipleSizesInMemory()
-				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-				.diskCacheSize(100 * 1024 * 1024)
-				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs().build();
-		ImageLoader.getInstance().init(config);
 	}
 
 	@Override
