@@ -7,13 +7,13 @@ import java.util.List;
 
 import net.arvin.adapters.FileMenuAdapter;
 import net.arvin.adapters.ImagesAdapter;
+import net.arvin.entitys.ConstantEntity;
 import net.arvin.entitys.ImageBean;
 import net.arvin.entitys.ImageFileBean;
 import net.arvin.listeners.OnItemChecked;
 import net.arvin.utils.WindowUtils;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -22,92 +22,61 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-
 @SuppressLint("HandlerLeak")
-public class SelectMultImagesActivity extends FragmentActivity implements
+public class SelectMultImagesActivity extends BaseActivity implements
 		OnItemClickListener, OnItemChecked, OnClickListener {
-
+	public static SelectMultImagesActivity INSTANCE;
 	private GridView imageGrid;
-	private List<ImageBean> images;
-	private List<ImageFileBean> imageFiles;
-	private ArrayList<String> selectedImages;
+	private ArrayList<ImageFileBean> imageFiles;
 	private ImagesAdapter mAdapter;
-	private Button chooseOk;
-	private int selectedMaxNum = 9;
 	private TextView review;
 	private PopupWindow fileMenu;
-	public static String RESPONSE_KEY = "response_key";
+
+	@Override
+	protected int setLayoutResId() {
+		return R.layout.activity_main;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_main);
-		initImageLoader(this);
 		initView();
 		setGridView();
-		initNormalData();
-		setListener();
 		loadData();
-	}
-
-	public void initImageLoader(Context context) {
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				context).threadPriority(Thread.NORM_PRIORITY - 2)
-				.denyCacheImageMultipleSizesInMemory()
-				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-				.diskCacheSize(100 * 1024 * 1024)
-				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs().build();
-		ImageLoader.getInstance().init(config);
+		INSTANCE = this;
 	}
 
 	private void initView() {
 		imageGrid = (GridView) findViewById(R.id.image_grid);
-		chooseOk = (Button) findViewById(R.id.choose_ok);
 		review = (TextView) findViewById(R.id.review);
-	}
-
-	private void initNormalData() {
-		selectedImages = new ArrayList<String>();
-		imageFiles = new ArrayList<ImageFileBean>();
-	}
-
-	private void setListener() {
-		findViewById(R.id.back).setOnClickListener(this);
 		findViewById(R.id.file_menu).setOnClickListener(this);
-		chooseOk.setOnClickListener(this);
 		review.setOnClickListener(this);
 	}
 
 	private void setGridView() {
-		images = new ArrayList<ImageBean>();
-		mAdapter = new ImagesAdapter(this, images, this, selectedMaxNum);
+		currentImages = new ArrayList<ImageBean>();
+		selectedImages = new ArrayList<ImageBean>();
+		maxNum = getIntent().getIntExtra(ConstantEntity.MAX_NUM,
+				ConstantEntity.getDefaultMaxSelectNum());
+		mAdapter = new ImagesAdapter(this, currentImages, this, maxNum);
 		imageGrid.setAdapter(mAdapter);
 		imageGrid.setOnItemClickListener(this);
 	}
 
 	private void loadData() {
+		imageFiles = new ArrayList<ImageFileBean>();
 
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				try {
@@ -127,9 +96,9 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 			while (externalCursor.moveToNext()) {
 				String path = externalCursor.getString(externalCursor
 						.getColumnIndex(MediaStore.Images.Media.DATA));
-				ImageBean img = new ImageBean();
-				img.setImagePath(path);
-				images.add(img);
+				ImageBean bean = new ImageBean();
+				bean.setImagePath(path);
+				currentImages.add(bean);
 				getParentFileInfo(path);
 			}
 		}
@@ -150,14 +119,14 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 			}
 		}
 		if (isAdd) {
-			ImageFileBean imageFile = new ImageFileBean();
-			imageFile.setTotalNum(1);
-			imageFile.setFirstImagePath(path);
-			imageFile.setImageFileName(parentFile.getName());
+			ImageFileBean bean = new ImageFileBean();
+			bean.setTotalNum(1);
+			bean.setFirstImagePath(path);
+			bean.setImageFileName(parentFile.getName());
 			List<String> imagePaths = new ArrayList<String>();
 			imagePaths.add(path);
-			imageFile.setImageFiles(imagePaths);
-			imageFiles.add(imageFile);
+			bean.setImageFiles(imagePaths);
+			imageFiles.add(bean);
 		}
 	}
 
@@ -179,7 +148,7 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case SCAN_OK:
-				Collections.reverse(images);
+				Collections.reverse(currentImages);
 				addAllImageToFile();
 				mAdapter.notifyDataSetChanged();
 				break;
@@ -191,10 +160,10 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 	private void addAllImageToFile() {
 		ImageFileBean imageFile = new ImageFileBean();
 		imageFile.setChekced(true);
-		imageFile.setFirstImagePath(images.get(0).getImagePath());
+		imageFile.setFirstImagePath(currentImages.get(0).getImagePath());
 		imageFile.setImageFileName("所有图片");
 		List<String> temps = new ArrayList<String>();
-		for (ImageBean bean : images) {
+		for (ImageBean bean : currentImages) {
 			temps.add(bean.getImagePath());
 		}
 		imageFile.setImageFiles(temps);
@@ -203,19 +172,35 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 	};
 
 	@Override
+	protected void onBackClicked() {
+		setResult(RESULT_CANCELED);
+		finish();
+	}
+
+	@Override
+	public void onItemChecked(int position, boolean isChecked) {
+		currentImages.get(position).setChecked(isChecked);
+		int size = getCurrentSelectedImages().size() + selectedImages.size();
+		setChooseOkStatus(size);
+		setReviewStatus(size);
+	}
+
+	protected void setReviewStatus(int selectedImageNum) {
+		if (review == null) {
+			review = (TextView) findViewById(R.id.review);
+		}
+		if (selectedImageNum == 0) {
+			review.setText("预览");
+			review.setEnabled(false);
+			return;
+		}
+		review.setText(getString(R.string.review, selectedImageNum, maxNum));
+		review.setEnabled(true);
+	}
+
+	@Override
 	public void onClick(View v) {
-		Intent data = null;
 		switch (v.getId()) {
-		case R.id.choose_ok:
-			data = new Intent();
-			data.putStringArrayListExtra(RESPONSE_KEY, selectedImages);
-			setResult(RESULT_OK, data);
-			finish();
-			break;
-		case R.id.back:
-			setResult(RESULT_CANCELED);
-			finish();
-			break;
 		case R.id.review:
 			reviewImage(selectedImages, 0);
 			break;
@@ -225,57 +210,56 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 		}
 	}
 
-	/**
-	 * @param position
-	 */
-	private void reviewImage(ArrayList<String> data, int position) {
-		Intent intent = new Intent(this, ReviewImagesActivity.class);
-		intent.putStringArrayListExtra(ReviewImagesActivity.SELECTED_IMAGES,
-				data);
-		intent.putExtra(ReviewImagesActivity.CLICKED_POSITION, position);
-		startActivity(intent);
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		ArrayList<String> allImages = new ArrayList<String>();
-		for (ImageBean bean : images) {
-			allImages.add(bean.getImagePath());
-		}
-		reviewImage(allImages, position);
+		reviewImage(currentImages, position);
+	}
+
+	/**
+	 * 预览图集
+	 * 
+	 * @param selectedImage
+	 *            所需展示的图集
+	 * @param position
+	 *            当前图片是第几位
+	 */
+	private void reviewImage(ArrayList<ImageBean> currentImages, int position) {
+		addSelectedImages(getCurrentSelectedImages());
+		Intent intent = new Intent(this, ReviewImagesActivity.class);
+		intent.putParcelableArrayListExtra(ConstantEntity.SELECTED_IMAGES,
+				selectedImages);
+		intent.putParcelableArrayListExtra(ConstantEntity.CURRENT_IMAGES,
+				currentImages);
+		intent.putExtra(ConstantEntity.CLICKED_POSITION, position);
+		intent.putExtra(ConstantEntity.MAX_NUM, maxNum);
+		startActivityForResult(intent, ConstantEntity.REQUEST_CODE);
 	}
 
 	@Override
-	public void onItemChecked(int position, boolean isChecked) {
-		if (isChecked) {
-			selectedImages.add(images.get(position).getImagePath());
-		} else {
-			selectedImages.remove(images.get(position).getImagePath());
-		}
-		setSelectedNum(selectedImages.size());
-	}
-
-	private void setSelectedNum(int num) {
-		if (num > 0) {
-			chooseOk.setEnabled(true);
-			chooseOk.setText(getString(R.string.chooseOk, num, selectedMaxNum));
-			review.setEnabled(true);
-			review.setText(getString(R.string.review, num));
-		} else {
-			chooseOk.setEnabled(false);
-			chooseOk.setText("完成");
-			review.setEnabled(false);
-			review.setText("预览");
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case ConstantEntity.REQUEST_CODE:
+				refreshViews(data);
+				break;
+			}
 		}
 	}
 
-	public int getSelectedMaxNum() {
-		return selectedMaxNum;
-	}
-
-	public void setSelectedMaxNum(int selectedMaxNum) {
-		this.selectedMaxNum = selectedMaxNum;
+	private void refreshViews(Intent data) {
+		try {
+			selectedImages.clear();
+			ArrayList<ImageBean> temps = data
+					.getParcelableArrayListExtra(ConstantEntity.RESPONSE_KEY);
+			selectedImages.addAll(temps);
+			setChooseOkStatus(selectedImages.size());
+			setReviewStatus(selectedImages.size());
+			syncCurrentImageStatus();
+			mAdapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void showFileMenu() {
@@ -303,24 +287,20 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 				@Override
 				public void onItemClick(AdapterView<?> adapter, View view,
 						int position, long arg3) {
+					addSelectedImages(getCurrentSelectedImages());
 					for (int i = 0; i < imageFiles.size(); i++) {
 						imageFiles.get(i).setChekced(false);
 					}
 					imageFiles.get(position).setChekced(true);
 					fileMenuAdapter.notifyDataSetChanged();
-					List<ImageBean> temps = images;
-					images.clear();
+					List<ImageBean> temps = currentImages;
+					currentImages.clear();
 					try {
-						List<String> childImageFiles = imageFiles.get(position)
-								.getImageFiles();
-						for (int i = 0; i < childImageFiles.size(); i++) {
-							ImageBean temp = new ImageBean();
-							temp.setChecked(false);
-							temp.setImagePath(childImageFiles.get(i));
-							images.add(temp);
-						}
+						currentImages.addAll(ImageBean.String2Object(imageFiles
+								.get(position).getImageFiles(), false));
+						syncCurrentImageStatus();
 					} catch (Exception e) {
-						images.addAll(temps);
+						currentImages.addAll(temps);
 						e.printStackTrace();
 					}
 					mAdapter.notifyDataSetChanged();
@@ -330,5 +310,4 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 		}
 		fileMenu.showAsDropDown(findViewById(R.id.bottom_bar), 0, 0);
 	}
-
 }
