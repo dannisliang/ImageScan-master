@@ -156,7 +156,7 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 			imageFile.setImageFileName(parentFile.getName());
 			List<String> imagePaths = new ArrayList<String>();
 			imagePaths.add(path);
-			imageFile.setImageFiles(imagePaths );
+			imageFile.setImageFiles(imagePaths);
 			imageFiles.add(imageFile);
 		}
 	}
@@ -194,14 +194,14 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 		imageFile.setFirstImagePath(images.get(0).getImagePath());
 		imageFile.setImageFileName("ËùÓÐÍ¼Æ¬");
 		List<String> temps = new ArrayList<String>();
-		for(ImageBean bean:images){
+		for (ImageBean bean : images) {
 			temps.add(bean.getImagePath());
 		}
-		imageFile.setImageFiles(temps );
+		imageFile.setImageFiles(temps);
 		imageFile.setTotalNum(temps.size());
-		imageFiles.add(0, imageFile );
+		imageFiles.add(0, imageFile);
 	};
-	
+
 	@Override
 	public void onClick(View v) {
 		Intent data = null;
@@ -217,6 +217,7 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 			finish();
 			break;
 		case R.id.review:
+			reviewImage(selectedImages, 0);
 			break;
 		case R.id.file_menu:
 			showFileMenu();
@@ -224,10 +225,25 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 		}
 	}
 
+	/**
+	 * @param position
+	 */
+	private void reviewImage(ArrayList<String> data, int position) {
+		Intent intent = new Intent(this, ReviewImagesActivity.class);
+		intent.putStringArrayListExtra(ReviewImagesActivity.SELECTED_IMAGES,
+				data);
+		intent.putExtra(ReviewImagesActivity.CLICKED_POSITION, position);
+		startActivity(intent);
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO show the bigger image
+		ArrayList<String> allImages = new ArrayList<String>();
+		for (ImageBean bean : images) {
+			allImages.add(bean.getImagePath());
+		}
+		reviewImage(allImages, position);
 	}
 
 	@Override
@@ -269,24 +285,25 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 					R.layout.layout_file_menu, null);
 			ListView fileMenuList = (ListView) contentView
 					.findViewById(R.id.fileMenuList);
-			final FileMenuAdapter fileMenuAdapter = new FileMenuAdapter(this, imageFiles);
+			final FileMenuAdapter fileMenuAdapter = new FileMenuAdapter(this,
+					imageFiles);
 			fileMenuList.setAdapter(fileMenuAdapter);
 			fileMenu = new PopupWindow(this);
 			fileMenu.setBackgroundDrawable(new ColorDrawable(0x000000));
 			fileMenu.setWidth(WindowUtils.getWindowWidth(this));
 			fileMenu.setHeight(WindowUtils.getWindowHeight(this) - 3
-					* WindowUtils.dip2px(this, 48) - WindowUtils.dip2px(this, 24));
+					* WindowUtils.dip2px(this, 48)
+					- WindowUtils.dip2px(this, 24));
 			fileMenu.setOutsideTouchable(true);
 			fileMenu.setFocusable(true);
-			fileMenu.setAnimationStyle(R.style.PopupAnimation);
+			// fileMenu.setAnimationStyle(R.style.PopupAnimation);
 			fileMenu.setContentView(contentView);
 			fileMenuList.setOnItemClickListener(new OnItemClickListener() {
-
 
 				@Override
 				public void onItemClick(AdapterView<?> adapter, View view,
 						int position, long arg3) {
-					for(int i=0;i<imageFiles.size();i++){
+					for (int i = 0; i < imageFiles.size(); i++) {
 						imageFiles.get(i).setChekced(false);
 					}
 					imageFiles.get(position).setChekced(true);
@@ -294,8 +311,9 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 					List<ImageBean> temps = images;
 					images.clear();
 					try {
-						List<String> childImageFiles = imageFiles.get(position).getImageFiles();
-						for(int i=0;i<childImageFiles.size();i++){
+						List<String> childImageFiles = imageFiles.get(position)
+								.getImageFiles();
+						for (int i = 0; i < childImageFiles.size(); i++) {
 							ImageBean temp = new ImageBean();
 							temp.setChecked(false);
 							temp.setImagePath(childImageFiles.get(i));
@@ -308,7 +326,6 @@ public class SelectMultImagesActivity extends FragmentActivity implements
 					mAdapter.notifyDataSetChanged();
 					fileMenu.dismiss();
 				}
-			
 			});
 		}
 		fileMenu.showAsDropDown(findViewById(R.id.bottom_bar), 0, 0);
