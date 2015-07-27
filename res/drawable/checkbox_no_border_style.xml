@@ -5,7 +5,7 @@
             <item><shape>
                     <solid android:color="#88000000" />
                 </shape></item>
-            <item android:bottom="@dimen/divider_middle" android:left="@dimen/divider_middle" android:right="@dimen/divider_middle" android:top="@dimen/divider_middle"><shape>
+            <item><shape>
                     <stroke android:width="@dimen/divider_small" android:color="@android:color/white" />
                 </shape></item>
             <item><bitmap android:gravity="center" android:src="@drawable/checked" />
@@ -15,7 +15,7 @@
             <item><shape>
                     <solid android:color="#88000000" />
                 </shape></item>
-            <item android:bottom="@dimen/divider_middle" android:left="@dimen/divider_middle" android:right="@dimen/divider_middle" android:top="@dimen/divider_middle"><shape>
+            <item><shape>
                     <stroke android:width="@dimen/divider_small" android:color="@android:color/white" />
                 </shape></item>
             <item><bitmap android:gravity="center" android:src="@drawable/checked" />
@@ -25,7 +25,7 @@
             <item><shape>
                     <solid android:color="#88000000" />
                 </shape></item>
-            <item android:bottom="@dimen/divider_middle" android:left="@dimen/divider_middle" android:right="@dimen/divider_middle" android:top="@dimen/divider_middle"><shape>
+            <item><shape>
                     <stroke android:width="@dimen/divider_small" android:color="@android:color/white" />
                 </shape></item>
         </layer-list></item>

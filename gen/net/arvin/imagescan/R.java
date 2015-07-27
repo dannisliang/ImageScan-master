@@ -44,30 +44,33 @@ public final class R {
         public static final int back_white=0x7f020001;
         public static final int button_bg=0x7f020002;
         public static final int button_text_style=0x7f020003;
-        public static final int checkbox_style=0x7f020004;
-        public static final int checked=0x7f020005;
-        public static final int file_ischecked=0x7f020006;
-        public static final int ic_launcher=0x7f020007;
-        public static final int select_icon_enable=0x7f020008;
-        public static final int select_more=0x7f020009;
-        public static final int select_text_enable=0x7f02000a;
-        public static final int selected_more=0x7f02000b;
+        public static final int checkbox_no_border_style=0x7f020004;
+        public static final int checkbox_style=0x7f020005;
+        public static final int checked=0x7f020006;
+        public static final int file_ischecked=0x7f020007;
+        public static final int ic_launcher=0x7f020008;
+        public static final int select_icon_enable=0x7f020009;
+        public static final int select_more=0x7f02000a;
+        public static final int select_text_enable=0x7f02000b;
+        public static final int selected_more=0x7f02000c;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0011;
+        public static final int action_settings=0x7f0a0013;
         public static final int back=0x7f0a0001;
         public static final int bottom_bar=0x7f0a0006;
+        public static final int choose_box=0x7f0a000b;
+        public static final int choose_layout=0x7f0a000a;
         public static final int choose_ok=0x7f0a0004;
         public static final int divider_line=0x7f0a0002;
-        public static final int fileMenuList=0x7f0a0010;
-        public static final int fileName=0x7f0a000e;
+        public static final int fileMenuList=0x7f0a0012;
+        public static final int fileName=0x7f0a0010;
         public static final int file_menu=0x7f0a0007;
-        public static final int firstImage=0x7f0a000c;
-        public static final int imageCount=0x7f0a000f;
+        public static final int firstImage=0x7f0a000e;
+        public static final int imageCount=0x7f0a0011;
         public static final int image_grid=0x7f0a0005;
-        public static final int isChecked=0x7f0a000d;
-        public static final int item_box=0x7f0a000b;
-        public static final int item_img=0x7f0a000a;
+        public static final int isChecked=0x7f0a000f;
+        public static final int item_box=0x7f0a000d;
+        public static final int item_img=0x7f0a000c;
         public static final int review=0x7f0a0008;
         public static final int scalePager=0x7f0a0009;
         public static final int title=0x7f0a0003;
@@ -87,7 +90,7 @@ public final class R {
         public static final int action_settings=0x7f070001;
         public static final int app_name=0x7f070000;
         public static final int chooseOk=0x7f070003;
-        public static final int hello_world=0x7f070002;
+        public static final int error_limit=0x7f070002;
         public static final int review=0x7f070004;
     }
     public static final class style {

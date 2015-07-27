@@ -70,18 +70,31 @@
         android:layout_alignParentBottom="true"
         android:background="@color/bottom_color" >
 
+        <RelativeLayout 
+            android:id="@+id/choose_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            >
+        <CheckBox
+            android:id="@+id/choose_box"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/checkbox_no_border_style"
+            android:button="@null" />
         <TextView
-            android:id="@+id/review"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:enabled="false"
             android:gravity="center_vertical"
-            android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:paddingLeft="10dp"
+            android:layout_toRightOf="@id/choose_box"
             android:text="选择"
             android:textColor="@drawable/button_text_style"
             android:textSize="@dimen/text_eighteen" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

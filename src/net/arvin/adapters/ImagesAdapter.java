@@ -83,10 +83,10 @@ public class ImagesAdapter extends BaseAdapter {
 					images.get(position).setChecked(false);
 					itemChecked.onItemChecked(position, false);
 				} else {
-					if (selectedNum == maxNum) {
+					if (selectedNum >= maxNum) {
 						ViewHolder holder = (ViewHolder) objs[0];
 						holder.item_box.setChecked(false);
-						Toast.makeText(mContext, "超过选图数量最大上限了~",
+						Toast.makeText(mContext, R.string.error_limit,
 								Toast.LENGTH_SHORT).show();
 						return;
 					}
