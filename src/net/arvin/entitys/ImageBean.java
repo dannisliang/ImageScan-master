@@ -12,6 +12,11 @@ public class ImageBean implements Parcelable {
 
 	public ImageBean() {
 	}
+	
+	public ImageBean(String imagePath,boolean isChecked) {
+		this.imagePath = imagePath;
+		this.isChecked = isChecked;
+	}
 
 	public String getImagePath() {
 		return imagePath;

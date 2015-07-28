@@ -11,17 +11,22 @@ import net.arvin.entitys.ConstantEntity;
 import net.arvin.entitys.ImageBean;
 import net.arvin.entitys.ImageFileBean;
 import net.arvin.listeners.OnItemChecked;
+import net.arvin.utils.TakePhotoUtils;
+import net.arvin.utils.TakePhotoUtils.SelectImageSuccessListener;
 import net.arvin.utils.WindowUtils;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaScannerConnection;
+import android.media.MediaScannerConnection.OnScanCompletedListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,13 +39,17 @@ import android.widget.TextView;
 
 @SuppressLint("HandlerLeak")
 public class SelectMultImagesActivity extends BaseActivity implements
-		OnItemClickListener, OnItemChecked, OnClickListener {
+		OnItemClickListener, OnItemChecked, OnClickListener,
+		SelectImageSuccessListener {
 	public static SelectMultImagesActivity INSTANCE;
 	private GridView imageGrid;
 	private ArrayList<ImageFileBean> imageFiles;
 	private ImagesAdapter mAdapter;
 	private TextView review;
 	private PopupWindow fileMenu;
+	public static final int SCAN_OK = 0;
+	private boolean showCamera = true;
+	private TakePhotoUtils photoUtils;
 
 	@Override
 	protected int setLayoutResId() {
@@ -69,6 +78,7 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		maxNum = getIntent().getIntExtra(ConstantEntity.MAX_NUM,
 				ConstantEntity.getDefaultMaxSelectNum());
 		mAdapter = new ImagesAdapter(this, currentImages, this, maxNum);
+		mAdapter.setShowCamera(showCamera);
 		imageGrid.setAdapter(mAdapter);
 		imageGrid.setOnItemClickListener(this);
 	}
@@ -142,8 +152,6 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		return externalCursor;
 	}
 
-	public static final int SCAN_OK = 0;
-
 	Handler UIHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -177,9 +185,20 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		finish();
 	}
 
+	private ImageBean getItem(int position) {
+		if (showCamera) {
+			if (position == 0) {
+				return null;
+			}
+			return currentImages.get(position - 1);
+		} else {
+			return currentImages.get(position);
+		}
+	}
+
 	@Override
 	public void onItemChecked(int position, boolean isChecked) {
-		currentImages.get(position).setChecked(isChecked);
+		getItem(position).setChecked(isChecked);
 		int size = getCurrentSelectedImages().size() + selectedImages.size();
 		setChooseOkStatus(size);
 		setReviewStatus(size);
@@ -213,7 +232,50 @@ public class SelectMultImagesActivity extends BaseActivity implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		if (showCamera) {
+			if (position == 0) {
+				if (photoUtils == null) {
+					photoUtils = new TakePhotoUtils(this, this);
+				}
+				photoUtils.choosePhotoFromCamera();
+				return;
+			} else {
+				position--;
+			}
+		}
 		reviewImage(currentImages, position);
+	}
+
+	@Override
+	public void onSelectImageSuccess(String path) {
+		scanFile(path);
+		addSelectedImages(getCurrentSelectedImages());
+		ImageBean bean = new ImageBean(path, true);
+		selectedImages.add(0, bean);
+		currentImages.add(0, bean);
+		syncData();
+	}
+
+	private void scanFile(String path) {
+		MediaScannerConnection.scanFile(this, new String[] { path }, null,
+				new OnScanCompletedListener() {
+					@Override
+					public void onScanCompleted(String path, Uri uri) {
+						Log.i("scanFile", "Ë¢ÐÂ³É¹¦");
+
+					}
+				});
+	}
+
+	private void syncData() {
+		try {
+			syncCurrentImageStatus();
+			setChooseOkStatus(selectedImages.size());
+			setReviewStatus(selectedImages.size());
+			mAdapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -242,6 +304,10 @@ public class SelectMultImagesActivity extends BaseActivity implements
 			switch (requestCode) {
 			case ConstantEntity.REQUEST_CODE:
 				refreshViews(data);
+				break;
+			case ConstantEntity.IMAGE_REQUEST_TAKE_PHOTO:
+				photoUtils
+						.onActivityResult(requestCode, resultCode, data, this);
 				break;
 			}
 		}
@@ -287,6 +353,12 @@ public class SelectMultImagesActivity extends BaseActivity implements
 				@Override
 				public void onItemClick(AdapterView<?> adapter, View view,
 						int position, long arg3) {
+					if (position == 0) {
+						showCamera = true;
+					} else {
+						showCamera = false;
+					}
+					mAdapter.setShowCamera(showCamera);
 					addSelectedImages(getCurrentSelectedImages());
 					for (int i = 0; i < imageFiles.size(); i++) {
 						imageFiles.get(i).setChekced(false);
