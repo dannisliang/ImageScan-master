@@ -53,16 +53,17 @@ public final class R {
         public static final int select_more=0x7f02000a;
         public static final int select_text_enable=0x7f02000b;
         public static final int selected_more=0x7f02000c;
+        public static final int take_photo=0x7f02000d;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0013;
+        public static final int action_settings=0x7f0a0014;
         public static final int back=0x7f0a0001;
         public static final int bottom_bar=0x7f0a0006;
         public static final int choose_box=0x7f0a000b;
         public static final int choose_layout=0x7f0a000a;
         public static final int choose_ok=0x7f0a0004;
         public static final int divider_line=0x7f0a0002;
-        public static final int fileMenuList=0x7f0a0012;
+        public static final int fileMenuList=0x7f0a0013;
         public static final int fileName=0x7f0a0010;
         public static final int file_menu=0x7f0a0007;
         public static final int firstImage=0x7f0a000e;
@@ -73,6 +74,7 @@ public final class R {
         public static final int item_img=0x7f0a000c;
         public static final int review=0x7f0a0008;
         public static final int scalePager=0x7f0a0009;
+        public static final int take_photo_tv=0x7f0a0012;
         public static final int title=0x7f0a0003;
         public static final int title_bar=0x7f0a0000;
     }
@@ -81,7 +83,8 @@ public final class R {
         public static final int activity_review_images=0x7f030001;
         public static final int item_edit_image=0x7f030002;
         public static final int item_file_menu=0x7f030003;
-        public static final int layout_file_menu=0x7f030004;
+        public static final int item_take_photo=0x7f030004;
+        public static final int layout_file_menu=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -97,11 +100,13 @@ public final class R {
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
         
 
         Base application theme for API 11+. This theme completely replaces
@@ -117,7 +122,6 @@ public final class R {
          */
         public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f080001;
         public static final int PopupAnimation=0x7f080002;

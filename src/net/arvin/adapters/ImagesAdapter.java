@@ -2,6 +2,7 @@ package net.arvin.adapters;
 
 import java.util.List;
 
+import net.arvin.entitys.ConstantEntity;
 import net.arvin.entitys.ImageBean;
 import net.arvin.imagescan.R;
 import net.arvin.listeners.OnClickWithObject;
@@ -26,6 +27,15 @@ public class ImagesAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private OnItemChecked itemChecked;
 	private int maxNum, selectedNum;
+	private boolean showCamera = true;
+
+	public boolean isShowCamera() {
+		return showCamera;
+	}
+
+	public void setShowCamera(boolean showCamera) {
+		this.showCamera = showCamera;
+	}
 
 	public ImagesAdapter(Context mContext, List<ImageBean> images,
 			OnItemChecked itemChecked, int maxNum) {
@@ -45,12 +55,19 @@ public class ImagesAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return images.size();
+		return showCamera ? images.size() + 1 : images.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return images.get(position);
+	public ImageBean getItem(int position) {
+		if (showCamera) {
+			if (position == 0) {
+				return null;
+			}
+			return images.get(position - 1);
+		} else {
+			return images.get(position);
+		}
 	}
 
 	@Override
@@ -59,28 +76,50 @@ public class ImagesAdapter extends BaseAdapter {
 	}
 
 	@Override
+	public int getViewTypeCount() {
+		return 2;
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		if (showCamera) {
+			return position == 0 ? ConstantEntity.TYPE_CAMERA
+					: ConstantEntity.TYPE_NORMAL;
+		}
+		return ConstantEntity.TYPE_NORMAL;
+	}
+
+	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
+		int type = getItemViewType(position);
+		if (type == ConstantEntity.TYPE_CAMERA) {
+			convertView = LayoutInflater.from(mContext).inflate(
+					R.layout.item_take_photo, null);
+			convertView.setTag(null);
+			return convertView;
+		}
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(
 					R.layout.item_edit_image, null);
-			holder = new ViewHolder();
-			holder.item_img = (ImageView) convertView
-					.findViewById(R.id.item_img);
-			holder.item_box = (CheckBox) convertView
-					.findViewById(R.id.item_box);
-			convertView.setTag(holder);
+			holder = new ViewHolder(convertView);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
+			if (holder == null) {
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.item_edit_image, null);
+				holder = new ViewHolder(convertView);
+
+			}
 		}
-		setData(holder, position);
+		setData(holder, getItem(position));
 		holder.item_box.setOnClickListener(new OnClickWithObject(holder) {
 
 			@Override
 			public void onClick(View v, Object[] objs) {
-				if (images.get(position).isChecked()) {
+				if (getItem(position).isChecked()) {
 					selectedNum--;
-					images.get(position).setChecked(false);
+					getItem(position).setChecked(false);
 					itemChecked.onItemChecked(position, false);
 				} else {
 					if (selectedNum >= maxNum) {
@@ -91,7 +130,7 @@ public class ImagesAdapter extends BaseAdapter {
 						return;
 					}
 					selectedNum++;
-					images.get(position).setChecked(true);
+					getItem(position).setChecked(true);
 					itemChecked.onItemChecked(position, true);
 				}
 			}
@@ -99,16 +138,21 @@ public class ImagesAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void setData(ViewHolder holder, int position) {
-		imageLoader
-				.displayImage("file://" + images.get(position).getImagePath(),
-						holder.item_img, options);
-		holder.item_box.setChecked(images.get(position).isChecked());
+	private void setData(ViewHolder holder, ImageBean item) {
+		imageLoader.displayImage("file://" + item.getImagePath(),
+				holder.item_img, options);
+		holder.item_box.setChecked(item.isChecked());
 	}
 
 	private class ViewHolder {
 		private ImageView item_img;
 		private CheckBox item_box;
+
+		public ViewHolder(View convertView) {
+			item_img = (ImageView) convertView.findViewById(R.id.item_img);
+			item_box = (CheckBox) convertView.findViewById(R.id.item_box);
+			convertView.setTag(this);
+		}
 	}
 
 }
