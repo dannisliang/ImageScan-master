@@ -26,6 +26,7 @@ public abstract class BaseActivity extends FragmentActivity {
 	protected Button chooseOk;
 	protected CheckBox chooseBox;
 	protected int maxNum;
+	protected boolean isCrop;
 	/**
 	 * µ±Ç°Í¼¼¯
 	 */
@@ -65,8 +66,12 @@ public abstract class BaseActivity extends FragmentActivity {
 		chooseOk.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				setResultData();
-				SelectMultImagesActivity.INSTANCE.finish();
+				if (maxNum == 1 && isCrop) {
+					cropImage();
+				} else {
+					setResultData();
+					SelectMultImagesActivity.INSTANCE.finish();
+				}
 			}
 
 		});
@@ -78,7 +83,7 @@ public abstract class BaseActivity extends FragmentActivity {
 			}
 		});
 	}
-	
+
 	protected void setResultData() {
 		Intent data = new Intent();
 		addSelectedImages(getCurrentSelectedImages());
@@ -86,6 +91,10 @@ public abstract class BaseActivity extends FragmentActivity {
 				selectedImages);
 		setResult(RESULT_OK, data);
 		finish();
+	}
+	
+	protected void cropImage() {
+		
 	}
 
 	protected void setChooseOkStatus(int selectedImageNum) {

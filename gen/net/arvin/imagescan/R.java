@@ -56,35 +56,38 @@ public final class R {
         public static final int take_photo=0x7f02000d;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0014;
+        public static final int action_settings=0x7f0a0016;
         public static final int back=0x7f0a0001;
-        public static final int bottom_bar=0x7f0a0006;
-        public static final int choose_box=0x7f0a000b;
-        public static final int choose_layout=0x7f0a000a;
+        public static final int bottom_bar=0x7f0a0008;
+        public static final int choose_box=0x7f0a000d;
+        public static final int choose_layout=0x7f0a000c;
         public static final int choose_ok=0x7f0a0004;
+        public static final int cropView=0x7f0a0006;
         public static final int divider_line=0x7f0a0002;
-        public static final int fileMenuList=0x7f0a0013;
-        public static final int fileName=0x7f0a0010;
-        public static final int file_menu=0x7f0a0007;
-        public static final int firstImage=0x7f0a000e;
-        public static final int imageCount=0x7f0a0011;
-        public static final int image_grid=0x7f0a0005;
-        public static final int isChecked=0x7f0a000f;
-        public static final int item_box=0x7f0a000d;
-        public static final int item_img=0x7f0a000c;
-        public static final int review=0x7f0a0008;
-        public static final int scalePager=0x7f0a0009;
-        public static final int take_photo_tv=0x7f0a0012;
+        public static final int fileMenuList=0x7f0a0015;
+        public static final int fileName=0x7f0a0012;
+        public static final int file_menu=0x7f0a0009;
+        public static final int firstImage=0x7f0a0010;
+        public static final int imageCount=0x7f0a0013;
+        public static final int image_grid=0x7f0a0007;
+        public static final int isChecked=0x7f0a0011;
+        public static final int item_box=0x7f0a000f;
+        public static final int item_img=0x7f0a000e;
+        public static final int review=0x7f0a000a;
+        public static final int scalePager=0x7f0a000b;
+        public static final int selectedImg=0x7f0a0005;
+        public static final int take_photo_tv=0x7f0a0014;
         public static final int title=0x7f0a0003;
         public static final int title_bar=0x7f0a0000;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_review_images=0x7f030001;
-        public static final int item_edit_image=0x7f030002;
-        public static final int item_file_menu=0x7f030003;
-        public static final int item_take_photo=0x7f030004;
-        public static final int layout_file_menu=0x7f030005;
+        public static final int activity_crop=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_review_images=0x7f030002;
+        public static final int item_edit_image=0x7f030003;
+        public static final int item_file_menu=0x7f030004;
+        public static final int item_take_photo=0x7f030005;
+        public static final int layout_file_menu=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f090000;
