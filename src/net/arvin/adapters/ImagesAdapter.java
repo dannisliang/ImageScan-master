@@ -28,6 +28,7 @@ public class ImagesAdapter extends BaseAdapter {
 	private OnItemChecked itemChecked;
 	private int maxNum, selectedNum;
 	private boolean showCamera = true;
+	private boolean isCrop = true;
 
 	public boolean isShowCamera() {
 		return showCamera;
@@ -35,6 +36,10 @@ public class ImagesAdapter extends BaseAdapter {
 
 	public void setShowCamera(boolean showCamera) {
 		this.showCamera = showCamera;
+	}
+	
+	public void setIsCrop(boolean isCrop){
+		this.isCrop = isCrop;
 	}
 
 	public ImagesAdapter(Context mContext, List<ImageBean> images,
@@ -111,6 +116,11 @@ public class ImagesAdapter extends BaseAdapter {
 				holder = new ViewHolder(convertView);
 
 			}
+		}
+		if(isCrop){
+			holder.item_box.setVisibility(View.GONE);
+		}else{
+			holder.item_box.setVisibility(View.VISIBLE);
 		}
 		setData(holder, getItem(position));
 		holder.item_box.setOnClickListener(new OnClickWithObject(holder) {

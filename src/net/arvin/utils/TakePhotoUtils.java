@@ -32,11 +32,12 @@ public class TakePhotoUtils {
 	private void initFileDir() {
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			fileDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+			fileDir = Environment.getExternalStorageDirectory()
+					.getAbsolutePath();
 		} else {
 			fileDir = Environment.getRootDirectory().getAbsolutePath();
 		}
-		fileDir += "/takephoto";
+		fileDir += "/" + ConstantEntity.SAVE_IMAGE_FILE_NAME;
 	}
 
 	public String getImagePath() {
@@ -55,7 +56,8 @@ public class TakePhotoUtils {
 		Log.i("URI", mCurrentFile.toString());
 		imagePath = mCurrentFile.toString();
 		final Intent intent = getCameraIntent(mCurrentFile);
-		mActivity.startActivityForResult(intent, ConstantEntity.IMAGE_REQUEST_TAKE_PHOTO);
+		mActivity.startActivityForResult(intent,
+				ConstantEntity.IMAGE_REQUEST_TAKE_PHOTO);
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data,

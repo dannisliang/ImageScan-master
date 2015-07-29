@@ -130,6 +130,12 @@ public class ReviewImagesActivity extends BaseActivity implements
 	protected void onBackClicked() {
 		setResultData();
 	}
+	
+	@Override
+	protected void onChooseOkBtnClicked() {
+		setResultData();
+		SelectMultImagesActivity.INSTANCE.finish();
+	}
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {

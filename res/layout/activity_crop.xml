@@ -38,7 +38,7 @@
             android:layout_toRightOf="@id/divider_line"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:text="图片"
+            android:text="裁剪"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_eighteen" />
 
@@ -66,8 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher" />
+            android:scaleType="centerCrop"/>
 
         <net.arvin.views.CropView
             android:id="@+id/cropView"

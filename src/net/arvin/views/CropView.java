@@ -1,27 +1,32 @@
 package net.arvin.views;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Calendar;
+
+import net.arvin.entitys.ConstantEntity;
 import net.arvin.entitys.CropRect;
 import net.arvin.entitys.Point;
 import net.arvin.utils.WindowUtils;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 public class CropView extends View {
 	private Context mContext;
-	/**
-	 * 单位是PX
-	 */
+	private CropRect mRect;
 	private int touchWidth;
 	private int touchHelpWidth;
-	/**
-	 * 要裁剪的矩形
-	 */
-	private CropRect mRect;
 	private int totalWidth;
 	private int totalHeight;
 	private int rectDefaultWidth;
@@ -41,6 +46,15 @@ public class CropView extends View {
 
 	public CropView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
+	}
+
+	public CropRect getMRect() {
+		return this.mRect;
+	}
+
+	public void setMRect(CropRect mRect) {
+		this.mRect = mRect;
+		invalidate();
 	}
 
 	public CropView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -143,7 +157,7 @@ public class CropView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		mRect.dealRect(totalHeight, totalWidth,2*touchWidth);
+		mRect.dealRect(totalHeight, totalWidth, 2 * touchWidth);
 		drawShadow(canvas);
 		drawTouchAngle(canvas);
 	}
@@ -565,5 +579,50 @@ public class CropView extends View {
 			return true;
 		}
 		return false;
+	}
+
+	@SuppressWarnings("static-access")
+	public String getCropImagePath(ImageView imageView) throws Exception {
+		Bitmap bm = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+		bm = bm.createBitmap(bm, (int) mRect.leftUp.x, (int) mRect.leftUp.y,
+				(int) (mRect.rightUp.x - mRect.leftUp.x),
+				(int) (mRect.leftBottom.y - mRect.leftUp.x));
+		return savePic(mContext, bm, Calendar.getInstance().getTimeInMillis()
+				+ "");
+	}
+
+	public String savePic(Context context, Bitmap bm, String fileName)
+			throws Exception {
+		String path = getPicPath();
+		File dirFile = new File(path);
+		if (!dirFile.exists()) {
+			dirFile.mkdirs();
+		}
+		String cropImageName = path +"/" +fileName + ".jpg";
+		File myCaptureFile = new File(cropImageName);
+		BufferedOutputStream bos = new BufferedOutputStream(
+				new FileOutputStream(myCaptureFile));
+		if (bm.compress(Bitmap.CompressFormat.JPEG, 80, bos)) {
+			bos.flush();
+			bos.close();
+			Log.i("TAG", "保存成功~");
+			return cropImageName;
+		}
+		if (bm.isRecycled()) {
+			bm.recycle();
+		}
+		return "";
+	}
+
+	public String getPicPath() {
+		String fileDir = "";
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			fileDir = Environment.getExternalStorageDirectory()
+					.getAbsolutePath();
+		} else {
+			fileDir = Environment.getRootDirectory().getAbsolutePath();
+		}
+		return fileDir + "/" + ConstantEntity.SAVE_IMAGE_FILE_NAME;
 	}
 }

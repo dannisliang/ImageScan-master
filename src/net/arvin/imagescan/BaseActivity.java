@@ -4,10 +4,16 @@ import java.util.ArrayList;
 
 import net.arvin.entitys.ConstantEntity;
 import net.arvin.entitys.ImageBean;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.media.MediaScannerConnection.OnScanCompletedListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -27,6 +34,7 @@ public abstract class BaseActivity extends FragmentActivity {
 	protected CheckBox chooseBox;
 	protected int maxNum;
 	protected boolean isCrop;
+	protected ProgressDialog mDialog;
 	/**
 	 * 当前图集
 	 */
@@ -35,6 +43,8 @@ public abstract class BaseActivity extends FragmentActivity {
 	 * 选中的图集，避免在切换图片文件时被清除
 	 */
 	protected ArrayList<ImageBean> selectedImages;
+	protected ImageLoader imageLoader;
+	protected DisplayImageOptions options;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,13 @@ public abstract class BaseActivity extends FragmentActivity {
 		initImageLoader(this);
 		setContentView(setLayoutResId());
 		initNormalData();
+		
+		imageLoader = ImageLoader.getInstance();
+		options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.ic_launcher)
+				.showImageForEmptyUri(R.drawable.ic_launcher)
+				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
+				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565).build();
 	}
 
 	private void initImageLoader(Context context) {
@@ -66,12 +83,7 @@ public abstract class BaseActivity extends FragmentActivity {
 		chooseOk.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (maxNum == 1 && isCrop) {
-					cropImage();
-				} else {
-					setResultData();
-					SelectMultImagesActivity.INSTANCE.finish();
-				}
+				onChooseOkBtnClicked();
 			}
 
 		});
@@ -83,6 +95,11 @@ public abstract class BaseActivity extends FragmentActivity {
 			}
 		});
 	}
+	
+	protected void onChooseOkBtnClicked(){
+		setResultData();
+		SelectMultImagesActivity.INSTANCE.finish();
+	}
 
 	protected void setResultData() {
 		Intent data = new Intent();
@@ -92,9 +109,11 @@ public abstract class BaseActivity extends FragmentActivity {
 		setResult(RESULT_OK, data);
 		finish();
 	}
-	
-	protected void cropImage() {
-		
+
+	protected void cropImage(String path) {
+		Intent intent = new Intent(this, CropActivity.class);
+		intent.putExtra(ConstantEntity.CROP_IMAGE, path);
+		startActivity(intent);
 	}
 
 	protected void setChooseOkStatus(int selectedImageNum) {
@@ -107,6 +126,13 @@ public abstract class BaseActivity extends FragmentActivity {
 		chooseOk.setEnabled(true);
 	}
 
+	protected boolean isCropImage(){
+		if(maxNum == 1&&isCrop){
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * 获取当前选中的图集
 	 * 
@@ -159,6 +185,9 @@ public abstract class BaseActivity extends FragmentActivity {
 			selectedImages.addAll(currentSelectedImages);
 			return;
 		}
+		if(currentSelectedImages == null){
+			return ;
+		}
 		for (int i = 0; i < currentSelectedImages.size(); i++) {
 			boolean isNeedAdd = true;
 			for (int j = 0; j < selectedImages.size(); j++) {
@@ -171,6 +200,43 @@ public abstract class BaseActivity extends FragmentActivity {
 				selectedImages.add(currentSelectedImages.get(i));
 			}
 		}
+	}
+	
+	protected void scanFile(String path) {
+		MediaScannerConnection.scanFile(this, new String[] { path }, null,
+				new OnScanCompletedListener() {
+					@Override
+					public void onScanCompleted(String path, Uri uri) {
+						Log.i("scanFile", "刷新成功");
+
+					}
+				});
+	}
+	
+	protected void showProgressDialog(String value){
+		if(mDialog == null){
+			mDialog = new ProgressDialog(this);
+			mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);  
+	        mDialog.setCancelable(true);
+	        mDialog.setCanceledOnTouchOutside(false);
+	        if(value!=null){
+	        	mDialog.setMessage(value);
+	        }
+		}
+		mDialog.show();
+	}
+	
+	protected void dismissProgressDialog(){
+		if(mDialog!= null){
+			mDialog.dismiss();
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		dismissProgressDialog();
+		mDialog = null;
+		super.onDestroy();
 	}
 
 	protected abstract int setLayoutResId();
