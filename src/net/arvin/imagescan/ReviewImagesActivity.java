@@ -59,6 +59,7 @@ public class ReviewImagesActivity extends BaseActivity implements
 	private void getData() {
 		maxNum = getIntent().getIntExtra(ConstantEntity.MAX_NUM,
 				ConstantEntity.getDefaultMaxSelectNum());
+		isCrop = getIntent().getBooleanExtra(ConstantEntity.IS_CROP, false);
 		selectedImages = getIntent().getParcelableArrayListExtra(
 				ConstantEntity.SELECTED_IMAGES);
 		currentImages = getIntent().getParcelableArrayListExtra(

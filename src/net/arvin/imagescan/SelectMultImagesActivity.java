@@ -47,7 +47,6 @@ public class SelectMultImagesActivity extends BaseActivity implements
 	private ImagesAdapter mAdapter;
 	private TextView review;
 	private PopupWindow fileMenu;
-	public static final int SCAN_OK = 0;
 	private boolean showCamera = true;
 	private TakePhotoUtils photoUtils;
 
@@ -77,6 +76,7 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		selectedImages = new ArrayList<ImageBean>();
 		maxNum = getIntent().getIntExtra(ConstantEntity.MAX_NUM,
 				ConstantEntity.getDefaultMaxSelectNum());
+		isCrop = getIntent().getBooleanExtra(ConstantEntity.IS_CROP, false);
 		mAdapter = new ImagesAdapter(this, currentImages, this, maxNum);
 		mAdapter.setShowCamera(showCamera);
 		imageGrid.setAdapter(mAdapter);
@@ -92,7 +92,7 @@ public class SelectMultImagesActivity extends BaseActivity implements
 				try {
 					Cursor externalCursor = getImageCursor();
 					setData(externalCursor);
-					UIHandler.sendEmptyMessage(SCAN_OK);
+					UIHandler.sendEmptyMessage(ConstantEntity.SCAN_OK);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -155,14 +155,13 @@ public class SelectMultImagesActivity extends BaseActivity implements
 	Handler UIHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case SCAN_OK:
+			case ConstantEntity.SCAN_OK:
 				Collections.reverse(currentImages);
 				addAllImageToFile();
 				mAdapter.notifyDataSetChanged();
 				break;
 			}
 		}
-
 	};
 
 	private void addAllImageToFile() {
