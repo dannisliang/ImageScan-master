@@ -19,14 +19,11 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaScannerConnection;
-import android.media.MediaScannerConnection.OnScanCompletedListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,8 +76,13 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		isCrop = getIntent().getBooleanExtra(ConstantEntity.IS_CROP, false);
 		mAdapter = new ImagesAdapter(this, currentImages, this, maxNum);
 		mAdapter.setShowCamera(showCamera);
+		mAdapter.setIsCrop(isCropImage());
 		imageGrid.setAdapter(mAdapter);
 		imageGrid.setOnItemClickListener(this);
+		if(isCropImage()){
+			chooseOk.setVisibility(View.GONE);
+			review.setVisibility(View.GONE);
+		}
 	}
 
 	private void loadData() {
@@ -217,6 +219,11 @@ public class SelectMultImagesActivity extends BaseActivity implements
 	}
 
 	@Override
+	protected void onChooseOkBtnClicked() {
+		setResultData();
+	}
+
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.review:
@@ -242,7 +249,11 @@ public class SelectMultImagesActivity extends BaseActivity implements
 				position--;
 			}
 		}
-		reviewImage(currentImages, position);
+		if (isCropImage()) {
+			cropImage(currentImages.get(position).getImagePath());
+		} else {
+			reviewImage(currentImages, position);
+		}
 	}
 
 	@Override
@@ -250,20 +261,13 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		scanFile(path);
 		addSelectedImages(getCurrentSelectedImages());
 		ImageBean bean = new ImageBean(path, true);
-		selectedImages.add(0, bean);
+		selectedImages.add(bean);
 		currentImages.add(0, bean);
 		syncData();
-	}
-
-	private void scanFile(String path) {
-		MediaScannerConnection.scanFile(this, new String[] { path }, null,
-				new OnScanCompletedListener() {
-					@Override
-					public void onScanCompleted(String path, Uri uri) {
-						Log.i("scanFile", "Ë¢ÐÂ³É¹¦");
-
-					}
-				});
+		if(isCropImage()){
+			cropImage(path);
+			return ;
+		}
 	}
 
 	private void syncData() {
