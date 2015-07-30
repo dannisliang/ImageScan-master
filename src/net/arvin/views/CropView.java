@@ -584,9 +584,19 @@ public class CropView extends View {
 	@SuppressWarnings("static-access")
 	public String getCropImagePath(ImageView imageView) throws Exception {
 		Bitmap bm = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-		bm = bm.createBitmap(bm, (int) mRect.leftUp.x, (int) mRect.leftUp.y,
-				(int) (mRect.rightUp.x - mRect.leftUp.x),
-				(int) (mRect.leftBottom.y - mRect.leftUp.x));
+		int x = (int) mRect.leftUp.x;
+		int y = (int) mRect.leftUp.y;
+		int cropWidth = (int) (mRect.rightUp.x - mRect.leftUp.x);
+		int cropHeight = (int) (mRect.leftBottom.y - mRect.leftUp.y);
+		if (x + cropWidth > bm.getWidth()) {
+			x = x * bm.getWidth() / totalWidth;
+			cropWidth = cropWidth * bm.getWidth() / totalWidth;
+		}
+		if (y + cropHeight > bm.getHeight()) {
+			y = y * bm.getHeight() / totalHeight;
+			cropHeight = cropHeight * bm.getHeight() / totalHeight;
+		}
+		bm = bm.createBitmap(bm, x, y, cropWidth, cropHeight);
 		return savePic(mContext, bm, Calendar.getInstance().getTimeInMillis()
 				+ "");
 	}
@@ -598,7 +608,7 @@ public class CropView extends View {
 		if (!dirFile.exists()) {
 			dirFile.mkdirs();
 		}
-		String cropImageName = path +"/" +fileName + ".jpg";
+		String cropImageName = path + "/" + fileName + ".jpg";
 		File myCaptureFile = new File(cropImageName);
 		BufferedOutputStream bos = new BufferedOutputStream(
 				new FileOutputStream(myCaptureFile));

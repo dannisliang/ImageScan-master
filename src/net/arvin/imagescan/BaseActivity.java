@@ -78,8 +78,8 @@ public abstract class BaseActivity extends FragmentActivity {
 	}
 
 	private void initNormalData() {
-		title = (TextView) findViewById(R.id.title);
-		chooseOk = (Button) findViewById(R.id.choose_ok);
+		title = (TextView) findViewById(R.id.is_title);
+		chooseOk = (Button) findViewById(R.id.is_choose_ok);
 		chooseOk.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -87,7 +87,7 @@ public abstract class BaseActivity extends FragmentActivity {
 			}
 
 		});
-		findViewById(R.id.back).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.is_back).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -95,7 +95,7 @@ public abstract class BaseActivity extends FragmentActivity {
 			}
 		});
 	}
-	
+
 	protected void onChooseOkBtnClicked(){
 		setResultData();
 		SelectMultImagesActivity.INSTANCE.finish();
@@ -122,7 +122,7 @@ public abstract class BaseActivity extends FragmentActivity {
 			chooseOk.setEnabled(false);
 			return;
 		}
-		chooseOk.setText(getString(R.string.chooseOk, selectedImageNum, maxNum));
+		chooseOk.setText(getString(R.string.is_chooseOk, selectedImageNum, maxNum));
 		chooseOk.setEnabled(true);
 	}
 
@@ -238,7 +238,7 @@ public abstract class BaseActivity extends FragmentActivity {
 		mDialog = null;
 		super.onDestroy();
 	}
-
+	
 	protected abstract int setLayoutResId();
 
 	protected abstract void onBackClicked();

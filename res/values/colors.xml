@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="title_color">#21282C</color>
-    <color name="bottom_color">#c0000000</color>
-    <color name="bg_color">#181919</color>
-    <color name="ensure_color">#44BF1A</color>
-    <color name="ensure_unenable_color">#337523</color>
-    <color name="text_enable_color">#828282</color>
-    <color name="text_color">#C7C7C7</color>
-    <color name="transparent">#ffffffff</color>
+    <color name="is_title_color">#21282C</color>
+    <color name="is_bottom_color">#c0000000</color>
+    <color name="is_bg_color">#181919</color>
+    <color name="is_ensure_color">#44BF1A</color>
+    <color name="is_ensure_unenable_color">#337523</color>
+    <color name="is_text_enable_color">#828282</color>
+    <color name="is_text_color">#C7C7C7</color>
+    <color name="is_transparent">#ffffffff</color>
 </resources>

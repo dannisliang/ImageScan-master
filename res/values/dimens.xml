@@ -1,10 +1,10 @@
 <resources>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="text_fifteen">15sp</dimen>
-    <dimen name="text_eighteen">18sp</dimen>
-    <dimen name="divider_small">0.5dp</dimen>
-    <dimen name="divider_middle">1dp</dimen>
-    <dimen name="bar_height_size">48dp</dimen>
+    <dimen name="is_text_fifteen">15sp</dimen>
+    <dimen name="is_text_eighteen">18sp</dimen>
+    <dimen name="is_divider_small">0.5dp</dimen>
+    <dimen name="is_divider_middle">1dp</dimen>
+    <dimen name="is_bar_height_size">48dp</dimen>
 
 </resources>

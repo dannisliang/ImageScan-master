@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true"><layer-list>
+            <item><shape>
+                    <solid android:color="#88000000" />
+                </shape></item>
+            <item android:bottom="@dimen/is_divider_middle" android:left="@dimen/is_divider_middle" android:right="@dimen/is_divider_middle" android:top="@dimen/is_divider_middle"><shape>
+                    <stroke android:width="@dimen/is_divider_small" android:color="@android:color/white" />
+                </shape></item>
+            <item><bitmap android:gravity="center" android:src="@drawable/is_checked" />
+            </item>
+        </layer-list></item>
+    <item android:state_checked="true"><layer-list>
+            <item><shape>
+                    <solid android:color="#88000000" />
+                </shape></item>
+            <item android:bottom="@dimen/is_divider_middle" android:left="@dimen/is_divider_middle" android:right="@dimen/is_divider_middle" android:top="@dimen/is_divider_middle"><shape>
+                    <stroke android:width="@dimen/is_divider_small" android:color="@android:color/white" />
+                </shape></item>
+            <item><bitmap android:gravity="center" android:src="@drawable/is_checked" />
+            </item>
+        </layer-list></item>
+    <item><layer-list>
+            <item><shape>
+                    <solid android:color="#88000000" />
+                </shape></item>
+            <item android:bottom="@dimen/is_divider_middle" android:left="@dimen/is_divider_middle" android:right="@dimen/is_divider_middle" android:top="@dimen/is_divider_middle"><shape>
+                    <stroke android:width="@dimen/is_divider_small" android:color="@android:color/white" />
+                </shape></item>
+        </layer-list></item>
+
+</selector>

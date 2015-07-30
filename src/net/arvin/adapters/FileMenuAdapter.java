@@ -54,16 +54,16 @@ public class FileMenuAdapter extends BaseAdapter {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.item_file_menu, null);
+					R.layout.is_item_file_menu, null);
 			holder = new ViewHolder();
 			holder.firstImage = (ImageView) convertView
-					.findViewById(R.id.firstImage);
+					.findViewById(R.id.is_firstImage);
 			holder.isChecked = (ImageView) convertView
-					.findViewById(R.id.isChecked);
+					.findViewById(R.id.is_isChecked);
 			holder.fileName = (TextView) convertView
-					.findViewById(R.id.fileName);
+					.findViewById(R.id.is_fileName);
 			holder.imgCount = (TextView) convertView
-					.findViewById(R.id.imageCount);
+					.findViewById(R.id.is_imageCount);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();

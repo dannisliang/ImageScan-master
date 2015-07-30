@@ -7,21 +7,21 @@
     android:paddingTop="5dp" >
 
     <ImageView
-        android:id="@+id/firstImage"
+        android:id="@+id/is_firstImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop" />
 
     <ImageView 
-        android:id="@+id/isChecked"
+        android:id="@+id/is_isChecked"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:contentDescription="@string/app_name"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:src="@drawable/file_ischecked"
+        android:src="@drawable/is_file_ischecked"
         />
     
     <RelativeLayout
@@ -29,26 +29,26 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
-        android:layout_toLeftOf="@id/isChecked"
-        android:layout_toRightOf="@id/firstImage" >
+        android:layout_toLeftOf="@id/is_isChecked"
+        android:layout_toRightOf="@id/is_firstImage" >
 
         <TextView
-            android:id="@+id/fileName"
+            android:id="@+id/is_fileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_eighteen" />
+            android:textSize="@dimen/is_text_eighteen" />
 
         <TextView
-            android:id="@+id/imageCount"
+            android:id="@+id/is_imageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fileName"
+            android:layout_below="@id/is_fileName"
             android:layout_marginTop="5dp"
             android:singleLine="true"
-            android:textColor="@color/text_enable_color"
-            android:textSize="@dimen/text_fifteen" />
+            android:textColor="@color/is_text_enable_color"
+            android:textSize="@dimen/is_text_fifteen" />
     </RelativeLayout>
 
 </RelativeLayout>
