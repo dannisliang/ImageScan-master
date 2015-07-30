@@ -6,20 +6,20 @@
     android:background="@android:color/white" >
 
     <ImageView
-        android:id="@+id/item_img"
+        android:id="@+id/is_item_img"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop" />
 
     <CheckBox
-        android:id="@+id/item_box"
+        android:id="@+id/is_item_box"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="6dp"
         android:layout_marginTop="6dp"
-        android:background="@drawable/checkbox_style"
+        android:background="@drawable/is_checkbox_style"
         android:button="@null" />
 
 </RelativeLayout>

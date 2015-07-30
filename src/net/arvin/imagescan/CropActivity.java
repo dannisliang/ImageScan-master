@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import net.arvin.entitys.ConstantEntity;
 import net.arvin.entitys.ImageBean;
 import net.arvin.views.CropView;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-public class CropActivity extends BaseActivity {
+@SuppressLint("HandlerLeak") public class CropActivity extends BaseActivity {
 
 	private ImageView selectedImg;
 	private CropView cropView;
@@ -16,7 +20,7 @@ public class CropActivity extends BaseActivity {
 
 	@Override
 	protected int setLayoutResId() {
-		return R.layout.activity_crop;
+		return R.layout.is_activity_crop;
 	}
 
 	@Override
@@ -27,8 +31,8 @@ public class CropActivity extends BaseActivity {
 	}
 
 	private void initView() {
-		selectedImg = (ImageView) findViewById(R.id.selectedImg);
-		cropView = (CropView) findViewById(R.id.cropView);
+		selectedImg = (ImageView) findViewById(R.id.is_selectedImg);
+		cropView = (CropView) findViewById(R.id.is_cropView);
 		chooseOk.setEnabled(true);
 	}
 
@@ -57,6 +61,8 @@ public class CropActivity extends BaseActivity {
 					SelectMultImagesActivity.INSTANCE.finish();
 				} catch (Exception e) {
 					e.printStackTrace();
+					dismissProgressDialog();
+					UIHandler.sendEmptyMessage(0);
 				}
 			}
 		}).start();
@@ -66,4 +72,11 @@ public class CropActivity extends BaseActivity {
 	protected void onBackClicked() {
 		onBackPressed();
 	}
+	
+	Handler UIHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			Toast.makeText(CropActivity.this, "±ß«∏£¨≤√ºÙ ß∞‹¡À~", Toast.LENGTH_SHORT).show();
+		}
+	};
 }

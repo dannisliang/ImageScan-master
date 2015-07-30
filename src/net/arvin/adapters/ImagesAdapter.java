@@ -99,20 +99,20 @@ public class ImagesAdapter extends BaseAdapter {
 		int type = getItemViewType(position);
 		if (type == ConstantEntity.TYPE_CAMERA) {
 			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.item_take_photo, null);
+					R.layout.is_item_take_photo, null);
 			convertView.setTag(null);
 			return convertView;
 		}
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.item_edit_image, null);
+					R.layout.is_item_edit_image, null);
 			holder = new ViewHolder(convertView);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 			if (holder == null) {
 				convertView = LayoutInflater.from(mContext).inflate(
-						R.layout.item_edit_image, null);
+						R.layout.is_item_edit_image, null);
 				holder = new ViewHolder(convertView);
 
 			}
@@ -135,7 +135,7 @@ public class ImagesAdapter extends BaseAdapter {
 					if (selectedNum >= maxNum) {
 						ViewHolder holder = (ViewHolder) objs[0];
 						holder.item_box.setChecked(false);
-						Toast.makeText(mContext, R.string.error_limit,
+						Toast.makeText(mContext, R.string.is_error_limit,
 								Toast.LENGTH_SHORT).show();
 						return;
 					}
@@ -159,8 +159,8 @@ public class ImagesAdapter extends BaseAdapter {
 		private CheckBox item_box;
 
 		public ViewHolder(View convertView) {
-			item_img = (ImageView) convertView.findViewById(R.id.item_img);
-			item_box = (CheckBox) convertView.findViewById(R.id.item_box);
+			item_img = (ImageView) convertView.findViewById(R.id.is_item_img);
+			item_box = (CheckBox) convertView.findViewById(R.id.is_item_box);
 			convertView.setTag(this);
 		}
 	}

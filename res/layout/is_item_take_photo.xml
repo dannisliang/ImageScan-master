@@ -10,24 +10,24 @@
         android:gravity="center_vertical" >
 
         <ImageView
-            android:id="@+id/item_img"
+            android:id="@+id/is_item_img"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
-            android:src="@drawable/take_photo" />
+            android:src="@drawable/is_take_photo" />
 
         <TextView
-            android:id="@+id/take_photo_tv"
+            android:id="@+id/is_take_photo_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_img"
+            android:layout_below="@id/is_item_img"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="拍摄照片"
             android:textColor="#E1E1E1"
-            android:textSize="@dimen/text_eighteen" />
+            android:textSize="@dimen/is_text_eighteen" />
     </RelativeLayout>
 
 </RelativeLayout>

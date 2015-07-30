@@ -49,7 +49,7 @@ public class SelectMultImagesActivity extends BaseActivity implements
 
 	@Override
 	protected int setLayoutResId() {
-		return R.layout.activity_main;
+		return R.layout.is_activity_main;
 	}
 
 	@Override
@@ -62,9 +62,9 @@ public class SelectMultImagesActivity extends BaseActivity implements
 	}
 
 	private void initView() {
-		imageGrid = (GridView) findViewById(R.id.image_grid);
-		review = (TextView) findViewById(R.id.review);
-		findViewById(R.id.file_menu).setOnClickListener(this);
+		imageGrid = (GridView) findViewById(R.id.is_image_grid);
+		review = (TextView) findViewById(R.id.is_review);
+		findViewById(R.id.is_file_menu).setOnClickListener(this);
 		review.setOnClickListener(this);
 	}
 
@@ -207,14 +207,14 @@ public class SelectMultImagesActivity extends BaseActivity implements
 
 	protected void setReviewStatus(int selectedImageNum) {
 		if (review == null) {
-			review = (TextView) findViewById(R.id.review);
+			review = (TextView) findViewById(R.id.is_review);
 		}
 		if (selectedImageNum == 0) {
 			review.setText("‘§¿¿");
 			review.setEnabled(false);
 			return;
 		}
-		review.setText(getString(R.string.review, selectedImageNum, maxNum));
+		review.setText(getString(R.string.is_review, selectedImageNum, maxNum));
 		review.setEnabled(true);
 	}
 
@@ -225,14 +225,20 @@ public class SelectMultImagesActivity extends BaseActivity implements
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.review:
+		if(v == review){
 			reviewImage(selectedImages, 0);
-			break;
-		case R.id.file_menu:
+		}else if(v == findViewById(R.id.is_file_menu)){
+
 			showFileMenu();
-			break;
 		}
+		// switch (v.getId()) {
+		// case R.id.review:
+		// reviewImage(selectedImages, 0);
+		// break;
+		// case R.id.file_menu:
+		// showFileMenu();
+		// break;
+		// }
 	}
 
 	@Override
@@ -335,9 +341,9 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		if (fileMenu == null) {
 			fileMenu = new PopupWindow(this);
 			View contentView = LayoutInflater.from(this).inflate(
-					R.layout.layout_file_menu, null);
+					R.layout.is_layout_file_menu, null);
 			ListView fileMenuList = (ListView) contentView
-					.findViewById(R.id.fileMenuList);
+					.findViewById(R.id.is_fileMenuList);
 			final FileMenuAdapter fileMenuAdapter = new FileMenuAdapter(this,
 					imageFiles);
 			fileMenuList.setAdapter(fileMenuAdapter);
@@ -383,6 +389,6 @@ public class SelectMultImagesActivity extends BaseActivity implements
 				}
 			});
 		}
-		fileMenu.showAsDropDown(findViewById(R.id.bottom_bar), 0, 0);
+		fileMenu.showAsDropDown(findViewById(R.id.is_bottom_bar), 0, 0);
 	}
 }

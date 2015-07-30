@@ -17,7 +17,7 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="PopupAnimation" parent="android:Animation">
+    <style name="IS_PopupAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/bottom_in</item>
         <item name="android:windowExitAnimation">@anim/bottom_out</item>
     </style>

@@ -22,7 +22,7 @@ public class ReviewImagesActivity extends BaseActivity implements
 
 	@Override
 	protected int setLayoutResId() {
-		return R.layout.activity_review_images;
+		return R.layout.is_activity_review_images;
 	}
 
 	@Override
@@ -34,12 +34,12 @@ public class ReviewImagesActivity extends BaseActivity implements
 	}
 
 	private void initView() {
-		reviewPager = (ViewPager) findViewById(R.id.scalePager);
-		chooseBox = (CheckBox) findViewById(R.id.choose_box);
+		reviewPager = (ViewPager) findViewById(R.id.is_scalePager);
+		chooseBox = (CheckBox) findViewById(R.id.is_choose_box);
 	}
 
 	private void setListener() {
-		findViewById(R.id.choose_layout).setOnClickListener(this);
+		findViewById(R.id.is_choose_layout).setOnClickListener(this);
 		chooseBox.setOnClickListener(this);
 	}
 
@@ -87,20 +87,24 @@ public class ReviewImagesActivity extends BaseActivity implements
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.choose_layout:
-		case R.id.choose_box:
+		if (v == findViewById(R.id.is_choose_layout)
+				|| v == findViewById(R.id.is_choose_box)) {
 			chooseImage();
-			break;
-		case R.id.choose_ok:
-			break;
 		}
+		// switch (v.getId()) {
+		// case R.id.choose_layout:
+		// case R.id.choose_box:
+		// chooseImage();
+		// break;
+		// case R.id.choose_ok:
+		// break;
+		// }
 	}
 
 	private void chooseImage() {
 		if (selectedNum >= maxNum) {
 			chooseBox.setChecked(false);
-			Toast.makeText(this, R.string.error_limit, Toast.LENGTH_SHORT)
+			Toast.makeText(this, R.string.is_error_limit, Toast.LENGTH_SHORT)
 					.show();
 		} else {
 			boolean checked = currentImages.get(currentPosition).isChecked();
@@ -130,7 +134,7 @@ public class ReviewImagesActivity extends BaseActivity implements
 	protected void onBackClicked() {
 		setResultData();
 	}
-	
+
 	@Override
 	protected void onChooseOkBtnClicked() {
 		setResultData();
