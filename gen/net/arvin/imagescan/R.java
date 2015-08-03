@@ -56,27 +56,28 @@ public final class R {
         public static final int is_take_photo=0x7f02000d;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0016;
+        public static final int action_settings=0x7f0a0017;
         public static final int is_back=0x7f0a0001;
-        public static final int is_bottom_bar=0x7f0a0008;
-        public static final int is_choose_box=0x7f0a000d;
-        public static final int is_choose_layout=0x7f0a000c;
+        public static final int is_bottom_bar=0x7f0a0009;
+        public static final int is_choose_box=0x7f0a000e;
+        public static final int is_choose_layout=0x7f0a000d;
         public static final int is_choose_ok=0x7f0a0004;
+        public static final int is_content=0x7f0a0007;
         public static final int is_cropView=0x7f0a0006;
         public static final int is_divider_line=0x7f0a0002;
-        public static final int is_fileMenuList=0x7f0a0015;
-        public static final int is_fileName=0x7f0a0012;
-        public static final int is_file_menu=0x7f0a0009;
-        public static final int is_firstImage=0x7f0a0010;
-        public static final int is_imageCount=0x7f0a0013;
-        public static final int is_image_grid=0x7f0a0007;
-        public static final int is_isChecked=0x7f0a0011;
-        public static final int is_item_box=0x7f0a000f;
-        public static final int is_item_img=0x7f0a000e;
-        public static final int is_review=0x7f0a000a;
-        public static final int is_scalePager=0x7f0a000b;
+        public static final int is_fileMenuList=0x7f0a0016;
+        public static final int is_fileName=0x7f0a0013;
+        public static final int is_file_menu=0x7f0a000a;
+        public static final int is_firstImage=0x7f0a0011;
+        public static final int is_imageCount=0x7f0a0014;
+        public static final int is_image_grid=0x7f0a0008;
+        public static final int is_isChecked=0x7f0a0012;
+        public static final int is_item_box=0x7f0a0010;
+        public static final int is_item_img=0x7f0a000f;
+        public static final int is_review=0x7f0a000b;
+        public static final int is_scalePager=0x7f0a000c;
         public static final int is_selectedImg=0x7f0a0005;
-        public static final int is_take_photo_tv=0x7f0a0014;
+        public static final int is_take_photo_tv=0x7f0a0015;
         public static final int is_title=0x7f0a0003;
         public static final int is_title_bar=0x7f0a0000;
     }

@@ -68,7 +68,7 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"/>
 
-        <net.arvin.views.CropView
+        <net.arvin.imagescan.views.CropView
             android:id="@+id/is_cropView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
