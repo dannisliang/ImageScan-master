@@ -9,20 +9,20 @@ package net.arvin.imagescan;
 
 public final class R {
     public static final class anim {
-        public static final int bottom_in=0x7f040000;
-        public static final int bottom_out=0x7f040001;
+        public static int bottom_in=0x7f040000;
+        public static int bottom_out=0x7f040001;
     }
     public static final class attr {
     }
     public static final class color {
-        public static final int is_bg_color=0x7f050002;
-        public static final int is_bottom_color=0x7f050001;
-        public static final int is_ensure_color=0x7f050003;
-        public static final int is_ensure_unenable_color=0x7f050004;
-        public static final int is_text_color=0x7f050006;
-        public static final int is_text_enable_color=0x7f050005;
-        public static final int is_title_color=0x7f050000;
-        public static final int is_transparent=0x7f050007;
+        public static int is_bg_color=0x7f050002;
+        public static int is_bottom_color=0x7f050001;
+        public static int is_ensure_color=0x7f050003;
+        public static int is_ensure_unenable_color=0x7f050004;
+        public static int is_text_color=0x7f050006;
+        public static int is_text_enable_color=0x7f050005;
+        public static int is_title_color=0x7f050000;
+        public static int is_transparent=0x7f050007;
     }
     public static final class dimen {
         /** 
@@ -30,75 +30,76 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f060005;
-        public static final int is_bar_height_size=0x7f060004;
-        public static final int is_divider_middle=0x7f060003;
-        public static final int is_divider_small=0x7f060002;
-        public static final int is_text_eighteen=0x7f060001;
+        public static int activity_horizontal_margin=0x7f060005;
+        public static int is_bar_height_size=0x7f060004;
+        public static int is_divider_middle=0x7f060003;
+        public static int is_divider_small=0x7f060002;
+        public static int is_text_eighteen=0x7f060001;
         /**  Default screen margins, per the Android Design guidelines. 
          */
-        public static final int is_text_fifteen=0x7f060000;
+        public static int is_text_fifteen=0x7f060000;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int is_alph_click_style=0x7f020001;
-        public static final int is_back_white=0x7f020002;
-        public static final int is_button_bg=0x7f020003;
-        public static final int is_button_text_style=0x7f020004;
-        public static final int is_checkbox_no_border_style=0x7f020005;
-        public static final int is_checkbox_style=0x7f020006;
-        public static final int is_checked=0x7f020007;
-        public static final int is_file_ischecked=0x7f020008;
-        public static final int is_select_icon_enable=0x7f020009;
-        public static final int is_select_more=0x7f02000a;
-        public static final int is_select_text_enable=0x7f02000b;
-        public static final int is_selected_more=0x7f02000c;
-        public static final int is_take_photo=0x7f02000d;
+        public static int ic_launcher=0x7f020000;
+        public static int is_alph_click_style=0x7f020001;
+        public static int is_back_white=0x7f020002;
+        public static int is_button_bg=0x7f020003;
+        public static int is_button_text_style=0x7f020004;
+        public static int is_checkbox_no_border_style=0x7f020005;
+        public static int is_checkbox_style=0x7f020006;
+        public static int is_checked=0x7f020007;
+        public static int is_file_ischecked=0x7f020008;
+        public static int is_select_icon_enable=0x7f020009;
+        public static int is_select_more=0x7f02000a;
+        public static int is_select_text_enable=0x7f02000b;
+        public static int is_selected_more=0x7f02000c;
+        public static int is_take_photo=0x7f02000d;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0017;
-        public static final int is_back=0x7f0a0001;
-        public static final int is_bottom_bar=0x7f0a0009;
-        public static final int is_choose_box=0x7f0a000e;
-        public static final int is_choose_layout=0x7f0a000d;
-        public static final int is_choose_ok=0x7f0a0004;
-        public static final int is_content=0x7f0a0007;
-        public static final int is_cropView=0x7f0a0006;
-        public static final int is_divider_line=0x7f0a0002;
-        public static final int is_fileMenuList=0x7f0a0016;
-        public static final int is_fileName=0x7f0a0013;
-        public static final int is_file_menu=0x7f0a000a;
-        public static final int is_firstImage=0x7f0a0011;
-        public static final int is_imageCount=0x7f0a0014;
-        public static final int is_image_grid=0x7f0a0008;
-        public static final int is_isChecked=0x7f0a0012;
-        public static final int is_item_box=0x7f0a0010;
-        public static final int is_item_img=0x7f0a000f;
-        public static final int is_review=0x7f0a000b;
-        public static final int is_scalePager=0x7f0a000c;
-        public static final int is_selectedImg=0x7f0a0005;
-        public static final int is_take_photo_tv=0x7f0a0015;
-        public static final int is_title=0x7f0a0003;
-        public static final int is_title_bar=0x7f0a0000;
+        public static int action_settings=0x7f0a0017;
+        public static int is_back=0x7f0a0002;
+        public static int is_bottom_bar=0x7f0a0009;
+        public static int is_choose_box=0x7f0a000e;
+        public static int is_choose_layout=0x7f0a000d;
+        public static int is_choose_ok=0x7f0a0005;
+        public static int is_content=0x7f0a0000;
+        public static int is_cropView=0x7f0a0007;
+        public static int is_divider_line=0x7f0a0003;
+        public static int is_fileMenuList=0x7f0a0016;
+        public static int is_fileName=0x7f0a0013;
+        public static int is_file_menu=0x7f0a000a;
+        public static int is_firstImage=0x7f0a0011;
+        public static int is_imageCount=0x7f0a0014;
+        public static int is_image_grid=0x7f0a0008;
+        public static int is_isChecked=0x7f0a0012;
+        public static int is_item_box=0x7f0a0010;
+        public static int is_item_img=0x7f0a000f;
+        public static int is_review=0x7f0a000b;
+        public static int is_scalePager=0x7f0a000c;
+        public static int is_selectedImg=0x7f0a0006;
+        public static int is_take_photo_tv=0x7f0a0015;
+        public static int is_title=0x7f0a0004;
+        public static int is_title_bar=0x7f0a0001;
     }
     public static final class layout {
-        public static final int is_activity_crop=0x7f030000;
-        public static final int is_activity_main=0x7f030001;
-        public static final int is_activity_review_images=0x7f030002;
-        public static final int is_item_edit_image=0x7f030003;
-        public static final int is_item_file_menu=0x7f030004;
-        public static final int is_item_take_photo=0x7f030005;
-        public static final int is_layout_file_menu=0x7f030006;
+        public static int is_activity_main=0x7f030000;
+        public static int is_fragment_crop=0x7f030001;
+        public static int is_fragment_main=0x7f030002;
+        public static int is_fragment_review_images=0x7f030003;
+        public static int is_item_edit_image=0x7f030004;
+        public static int is_item_file_menu=0x7f030005;
+        public static int is_item_take_photo=0x7f030006;
+        public static int is_layout_file_menu=0x7f030007;
     }
     public static final class menu {
-        public static final int main=0x7f090000;
+        public static int main=0x7f090000;
     }
     public static final class string {
-        public static final int action_settings=0x7f070001;
-        public static final int app_name=0x7f070000;
-        public static final int is_chooseOk=0x7f070003;
-        public static final int is_error_limit=0x7f070002;
-        public static final int is_review=0x7f070004;
+        public static int action_settings=0x7f070001;
+        public static int app_name=0x7f070000;
+        public static int is_chooseOk=0x7f070003;
+        public static int is_error_limit=0x7f070002;
+        public static int is_review=0x7f070004;
     }
     public static final class style {
         /** 
@@ -124,10 +125,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080000;
+        public static int AppBaseTheme=0x7f080000;
         /**  Application theme. 
          */
-        public static final int AppTheme=0x7f080001;
-        public static final int IS_PopupAnimation=0x7f080002;
+        public static int AppTheme=0x7f080001;
+        public static int IS_PopupAnimation=0x7f080002;
     }
 }

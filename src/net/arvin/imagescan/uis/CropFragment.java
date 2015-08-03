@@ -1,8 +1,9 @@
-package net.arvin.imagescan.ui;
+package net.arvin.imagescan.uis;
 
 import java.util.ArrayList;
 
 import net.arvin.imagescan.R;
+import net.arvin.imagescan.entitys.ConstantEntity;
 import net.arvin.imagescan.entitys.ImageBean;
 import net.arvin.imagescan.views.CropView;
 import android.annotation.SuppressLint;
@@ -14,40 +15,37 @@ import android.widget.Toast;
 
 @SuppressLint("HandlerLeak")
 public class CropFragment extends BaseFragment {
-
 	private ImageView selectedImg;
 	private CropView cropView;
 	private String cropImagePath;
 
 	@Override
-	protected int setLayoutResId() {
-		return R.layout.is_activity_crop;
+	protected int contentLayoutRes() {
+		return R.layout.is_fragment_crop;
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
-	@Override
-	protected void initNormalData() {
-		super.initNormalData();
+	protected void init() {
 		initView();
-		initData();
+		initData(getArguments());
 	}
-	
+
 	private void initView() {
-		selectedImg = (ImageView) rootView.findViewById(R.id.is_selectedImg);
-		cropView = (CropView) rootView.findViewById(R.id.is_cropView);
+		selectedImg = (ImageView) root.findViewById(R.id.is_selectedImg);
+		cropView = (CropView) root.findViewById(R.id.is_cropView);
 		chooseOk.setEnabled(true);
 	}
 
-	private void initData() {
-//		String path = getIntent().getStringExtra(ConstantEntity.CROP_IMAGE);
-//		if (path == null) {
-//			path = "";
-//		}
-		String path="";
+	@Override
+	protected void updata(Bundle bundle) {
+		initData(bundle);
+	}
+
+	private void initData(Bundle bundle) {
+		String path = bundle.getString(ConstantEntity.CROP_IMAGE);
+		if (path == null) {
+			path = "";
+		}
 		imageLoader.displayImage("file://" + path, selectedImg, options);
 	}
 
@@ -65,7 +63,6 @@ public class CropFragment extends BaseFragment {
 					selectedImages = new ArrayList<ImageBean>();
 					selectedImages.add(new ImageBean(cropImagePath, true));
 					setResultData();
-					SelectMultImagesActivity.INSTANCE.finish();
 				} catch (Exception e) {
 					e.printStackTrace();
 					dismissProgressDialog();
@@ -75,9 +72,8 @@ public class CropFragment extends BaseFragment {
 		}).start();
 	}
 
-	@Override
 	protected void onBackClicked() {
-		popBackStack();
+		switchFragment(0, null);
 	}
 
 	Handler UIHandler = new Handler() {

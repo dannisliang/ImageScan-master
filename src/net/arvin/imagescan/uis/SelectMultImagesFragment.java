@@ -1,4 +1,4 @@
-package net.arvin.imagescan.ui;
+package net.arvin.imagescan.uis;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import net.arvin.imagescan.entitys.ImageBean;
 import net.arvin.imagescan.entitys.ImageFileBean;
 import net.arvin.imagescan.listeners.OnItemChecked;
 import net.arvin.imagescan.utils.TakePhotoUtils;
-import net.arvin.imagescan.utils.WindowUtils;
 import net.arvin.imagescan.utils.TakePhotoUtils.SelectImageSuccessListener;
+import net.arvin.imagescan.utils.WindowUtils;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -36,54 +36,61 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 @SuppressLint("HandlerLeak")
-public class SelectMultImagesActivity extends BaseActivity implements
-		OnItemClickListener, OnItemChecked, OnClickListener,
+public class SelectMultImagesFragment extends BaseFragment implements
+		OnClickListener, OnItemChecked, OnItemClickListener,
 		SelectImageSuccessListener {
-	public static SelectMultImagesActivity INSTANCE;
 	private GridView imageGrid;
-	private ArrayList<ImageFileBean> imageFiles;
 	private ImagesAdapter mAdapter;
-	private TextView review;
-	private PopupWindow fileMenu;
 	private boolean showCamera = true;
+	private ArrayList<ImageFileBean> imageFiles;
 	private TakePhotoUtils photoUtils;
+	private PopupWindow fileMenu;
 
 	@Override
-	protected int setLayoutResId() {
-		return R.layout.is_activity_main;
+	protected int contentLayoutRes() {
+		return R.layout.is_fragment_main;
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void init() {
 		initView();
 		setGridView();
 		loadData();
-		INSTANCE = this;
 	}
 
 	private void initView() {
-		imageGrid = (GridView) findViewById(R.id.is_image_grid);
-		review = (TextView) findViewById(R.id.is_review);
-		findViewById(R.id.is_file_menu).setOnClickListener(this);
+		imageGrid = (GridView) root.findViewById(R.id.is_image_grid);
+		review = (TextView) root.findViewById(R.id.is_review);
+		root.findViewById(R.id.is_file_menu).setOnClickListener(this);
 		review.setOnClickListener(this);
 	}
 
 	private void setGridView() {
 		currentImages = new ArrayList<ImageBean>();
 		selectedImages = new ArrayList<ImageBean>();
-		maxNum = getIntent().getIntExtra(ConstantEntity.MAX_NUM,
+		Bundle bundle = getArguments();
+		if (bundle == null) {
+			bundle = new Bundle();
+		}
+		maxNum = bundle.getInt(ConstantEntity.MAX_NUM,
 				ConstantEntity.getDefaultMaxSelectNum());
-		isCrop = getIntent().getBooleanExtra(ConstantEntity.IS_CROP, true);
-		mAdapter = new ImagesAdapter(this, currentImages, this, maxNum);
+		isCrop = bundle.getBoolean(ConstantEntity.IS_CROP, false);
+		mAdapter = new ImagesAdapter(getActivity(), currentImages, this, maxNum);
 		mAdapter.setShowCamera(showCamera);
 		mAdapter.setIsCrop(isCropImage());
 		imageGrid.setAdapter(mAdapter);
 		imageGrid.setOnItemClickListener(this);
-		if(isCropImage()){
+		if (isCropImage()) {
 			chooseOk.setVisibility(View.GONE);
 			review.setVisibility(View.GONE);
 		}
+	}
+
+	public void updata(Bundle bundle) {
+		if(bundle == null){
+			return ;
+		}
+		refreshViews(bundle);
 	}
 
 	private void loadData() {
@@ -101,7 +108,6 @@ public class SelectMultImagesActivity extends BaseActivity implements
 				}
 			}
 		}).start();
-
 	}
 
 	private void setData(Cursor externalCursor) throws Exception {
@@ -145,8 +151,7 @@ public class SelectMultImagesActivity extends BaseActivity implements
 
 	private Cursor getImageCursor() throws Exception {
 		Uri externalImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-		ContentResolver resolver = SelectMultImagesActivity.this
-				.getContentResolver();
+		ContentResolver resolver = getActivity().getContentResolver();
 		Cursor externalCursor = resolver.query(externalImageUri, null,
 				MediaStore.Images.Media.MIME_TYPE + "=? or "
 						+ MediaStore.Images.Media.MIME_TYPE + "=?",
@@ -181,12 +186,6 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		imageFiles.add(0, imageFile);
 	};
 
-	@Override
-	protected void onBackClicked() {
-		setResult(RESULT_CANCELED);
-		finish();
-	}
-
 	private ImageBean getItem(int position) {
 		if (showCamera) {
 			if (position == 0) {
@@ -195,6 +194,15 @@ public class SelectMultImagesActivity extends BaseActivity implements
 			return currentImages.get(position - 1);
 		} else {
 			return currentImages.get(position);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v == review) {
+			reviewImage(selectedImages, 0);
+		} else if (v == root.findViewById(R.id.is_file_menu)) {
+			showFileMenu();
 		}
 	}
 
@@ -208,7 +216,7 @@ public class SelectMultImagesActivity extends BaseActivity implements
 
 	protected void setReviewStatus(int selectedImageNum) {
 		if (review == null) {
-			review = (TextView) findViewById(R.id.is_review);
+			review = (TextView) root.findViewById(R.id.is_review);
 		}
 		if (selectedImageNum == 0) {
 			review.setText("‘§¿¿");
@@ -220,35 +228,12 @@ public class SelectMultImagesActivity extends BaseActivity implements
 	}
 
 	@Override
-	protected void onChooseOkBtnClicked() {
-		setResultData();
-	}
-
-	@Override
-	public void onClick(View v) {
-		if(v == review){
-			reviewImage(selectedImages, 0);
-		}else if(v == findViewById(R.id.is_file_menu)){
-
-			showFileMenu();
-		}
-		// switch (v.getId()) {
-		// case R.id.review:
-		// reviewImage(selectedImages, 0);
-		// break;
-		// case R.id.file_menu:
-		// showFileMenu();
-		// break;
-		// }
-	}
-
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		if (showCamera) {
 			if (position == 0) {
 				if (photoUtils == null) {
-					photoUtils = new TakePhotoUtils(this, this);
+					photoUtils = new TakePhotoUtils(getActivity(), this);
 				}
 				photoUtils.choosePhotoFromCamera();
 				return;
@@ -271,9 +256,9 @@ public class SelectMultImagesActivity extends BaseActivity implements
 		selectedImages.add(bean);
 		currentImages.add(0, bean);
 		syncData();
-		if(isCropImage()){
+		if (isCropImage()) {
 			cropImage(path);
-			return ;
+			return;
 		}
 	}
 
@@ -298,42 +283,35 @@ public class SelectMultImagesActivity extends BaseActivity implements
 	 */
 	private void reviewImage(ArrayList<ImageBean> currentImages, int position) {
 		addSelectedImages(getCurrentSelectedImages());
-		Intent intent = new Intent(this, ReviewImagesActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putParcelableArrayList(ConstantEntity.SELECTED_IMAGES,
 				selectedImages);
 		bundle.putParcelableArrayList(ConstantEntity.CURRENT_IMAGES,
 				currentImages);
-		intent.putParcelableArrayListExtra(ConstantEntity.SELECTED_IMAGES,
-				selectedImages);
-		intent.putParcelableArrayListExtra(ConstantEntity.CURRENT_IMAGES,
-				currentImages);
-		intent.putExtra(ConstantEntity.CLICKED_POSITION, position);
-		intent.putExtra(ConstantEntity.MAX_NUM, maxNum);
-		startActivityForResult(intent, ConstantEntity.REQUEST_CODE);
+		bundle.putInt(ConstantEntity.CLICKED_POSITION, position);
+		bundle.putInt(ConstantEntity.MAX_NUM, maxNum);
+		switchFragment(1, bundle);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == ConstantEntity.RESULT_OK) {
 			switch (requestCode) {
-			case ConstantEntity.REQUEST_CODE:
-				refreshViews(data);
-				break;
+			// case ConstantEntity.REQUEST_CODE:
+			// refreshViews(data);
+			// break;
 			case ConstantEntity.IMAGE_REQUEST_TAKE_PHOTO:
-				photoUtils
-						.onActivityResult(requestCode, resultCode, data, this);
+				photoUtils.onActivityResult(requestCode, resultCode, data,
+						getActivity());
 				break;
 			}
 		}
 	}
 
-	private void refreshViews(Intent data) {
+	private void refreshViews(Bundle bundle) {
 		try {
-			selectedImages.clear();
-			ArrayList<ImageBean> temps = data
-					.getParcelableArrayListExtra(ConstantEntity.RESPONSE_KEY);
-			selectedImages.addAll(temps);
+			ArrayList<ImageBean> temps = bundle
+					.getParcelableArrayList(ConstantEntity.RESPONSE_KEY);
+			addSelectedImages(temps);
 			setChooseOkStatus(selectedImages.size());
 			setReviewStatus(selectedImages.size());
 			syncCurrentImageStatus();
@@ -345,20 +323,20 @@ public class SelectMultImagesActivity extends BaseActivity implements
 
 	private void showFileMenu() {
 		if (fileMenu == null) {
-			fileMenu = new PopupWindow(this);
-			View contentView = LayoutInflater.from(this).inflate(
+			fileMenu = new PopupWindow(getActivity());
+			View contentView = LayoutInflater.from(getActivity()).inflate(
 					R.layout.is_layout_file_menu, null);
 			ListView fileMenuList = (ListView) contentView
 					.findViewById(R.id.is_fileMenuList);
-			final FileMenuAdapter fileMenuAdapter = new FileMenuAdapter(this,
-					imageFiles);
+			final FileMenuAdapter fileMenuAdapter = new FileMenuAdapter(
+					getActivity(), imageFiles);
 			fileMenuList.setAdapter(fileMenuAdapter);
-			fileMenu = new PopupWindow(this);
+			fileMenu = new PopupWindow(getActivity());
 			fileMenu.setBackgroundDrawable(new ColorDrawable(0x000000));
-			fileMenu.setWidth(WindowUtils.getWindowWidth(this));
-			fileMenu.setHeight(WindowUtils.getWindowHeight(this) - 3
-					* WindowUtils.dip2px(this, 48)
-					- WindowUtils.dip2px(this, 24));
+			fileMenu.setWidth(WindowUtils.getWindowWidth(getActivity()));
+			fileMenu.setHeight(WindowUtils.getWindowHeight(getActivity()) - 3
+					* WindowUtils.dip2px(getActivity(), 48)
+					- WindowUtils.dip2px(getActivity(), 24));
 			fileMenu.setOutsideTouchable(true);
 			fileMenu.setFocusable(true);
 			// fileMenu.setAnimationStyle(R.style.PopupAnimation);
@@ -395,6 +373,7 @@ public class SelectMultImagesActivity extends BaseActivity implements
 				}
 			});
 		}
-		fileMenu.showAsDropDown(findViewById(R.id.is_bottom_bar), 0, 0);
+		fileMenu.showAsDropDown(root.findViewById(R.id.is_bottom_bar), 0, 0);
 	}
+
 }

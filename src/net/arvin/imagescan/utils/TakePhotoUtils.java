@@ -20,7 +20,6 @@ public class TakePhotoUtils {
 	private String imagePath;
 	private File mCurrentFile;
 	private SelectImageSuccessListener imageSuccess;
-	private static final int RESULT_OK = -1;
 
 	public TakePhotoUtils(Activity mActivity,
 			SelectImageSuccessListener imageSuccess) {
@@ -62,7 +61,7 @@ public class TakePhotoUtils {
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data,
 			Activity mActivity) {
-		if (resultCode == RESULT_OK) {
+		if (resultCode == ConstantEntity.RESULT_OK) {
 			switch (requestCode) {
 			case ConstantEntity.IMAGE_REQUEST_TAKE_PHOTO:
 				imageSuccess.onSelectImageSuccess(imagePath);

@@ -1,4 +1,4 @@
-package net.arvin.imagescan.ui;
+package net.arvin.imagescan.uis;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-public class ReviewImagesActivity extends BaseActivity implements
+public class ReviewImagesFragment extends BaseFragment implements
 		OnClickListener, OnPageChangeListener {
 	private int currentPosition = 0;
 	private ViewPager reviewPager;
@@ -22,54 +22,61 @@ public class ReviewImagesActivity extends BaseActivity implements
 	private int selectedNum;
 
 	@Override
-	protected int setLayoutResId() {
-		return R.layout.is_activity_review_images;
+	protected int contentLayoutRes() {
+		return R.layout.is_fragment_review_images;
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void init() {
 		initView();
 		setListener();
-		initData();
+		initData(getArguments());
 	}
 
 	private void initView() {
-		reviewPager = (ViewPager) findViewById(R.id.is_scalePager);
-		chooseBox = (CheckBox) findViewById(R.id.is_choose_box);
+		reviewPager = (ViewPager) root.findViewById(R.id.is_scalePager);
+		chooseBox = (CheckBox) root.findViewById(R.id.is_choose_box);
 	}
 
 	private void setListener() {
-		findViewById(R.id.is_choose_layout).setOnClickListener(this);
+		root.findViewById(R.id.is_choose_layout).setOnClickListener(this);
 		chooseBox.setOnClickListener(this);
 	}
 
-	private void initData() {
-		getData();
+	@Override
+	protected void updata(Bundle bundle) {
+		initData(bundle);
+	}
+	
+	private void initData(Bundle bundle) {
+		getData(bundle);
 		{
+			selectedNum = selectedImages.size();
 			setTitleText(currentPosition);
 			setChooseStatus(currentImages.get(currentPosition).isChecked());
-			selectedNum = selectedImages.size();
 			setChooseOkStatus(selectedNum);
 		}
-		reviewPager.setAdapter(new ReviewPagerAdapter(this, currentImages));
+		reviewPager.setAdapter(new ReviewPagerAdapter(getActivity(),
+				currentImages));
 		reviewPager.setCurrentItem(currentPosition, false);
 		reviewPager.setOnPageChangeListener(this);
 	}
 
-	private void getData() {
-		maxNum = getIntent().getIntExtra(ConstantEntity.MAX_NUM,
+	private void getData(Bundle bundle) {
+		if(bundle == null){
+			bundle = new Bundle();
+		}
+		maxNum = bundle.getInt(ConstantEntity.MAX_NUM,
 				ConstantEntity.getDefaultMaxSelectNum());
-		isCrop = getIntent().getBooleanExtra(ConstantEntity.IS_CROP, false);
-		selectedImages = getIntent().getParcelableArrayListExtra(
-				ConstantEntity.SELECTED_IMAGES);
-		currentImages = getIntent().getParcelableArrayListExtra(
-				ConstantEntity.CURRENT_IMAGES);
+		isCrop = bundle.getBoolean(ConstantEntity.IS_CROP, false);
+		selectedImages = bundle
+				.getParcelableArrayList(ConstantEntity.SELECTED_IMAGES);
+		currentImages = bundle
+				.getParcelableArrayList(ConstantEntity.CURRENT_IMAGES);
 		if (currentImages == null) {
 			currentImages = new ArrayList<ImageBean>();
 		}
-		currentPosition = getIntent().getIntExtra(
-				ConstantEntity.CLICKED_POSITION, 0);
+		currentPosition = bundle.getInt(ConstantEntity.CLICKED_POSITION, 0);
 
 		try {
 			syncCurrentImageStatus();
@@ -88,8 +95,8 @@ public class ReviewImagesActivity extends BaseActivity implements
 
 	@Override
 	public void onClick(View v) {
-		if (v == findViewById(R.id.is_choose_layout)
-				|| v == findViewById(R.id.is_choose_box)) {
+		if (v == root.findViewById(R.id.is_choose_layout)
+				|| v == root.findViewById(R.id.is_choose_box)) {
 			chooseImage();
 		}
 	}
@@ -97,7 +104,7 @@ public class ReviewImagesActivity extends BaseActivity implements
 	private void chooseImage() {
 		if (selectedNum >= maxNum) {
 			chooseBox.setChecked(false);
-			Toast.makeText(this, R.string.is_error_limit, Toast.LENGTH_SHORT)
+			Toast.makeText(getActivity(), R.string.is_error_limit, Toast.LENGTH_SHORT)
 					.show();
 		} else {
 			boolean checked = currentImages.get(currentPosition).isChecked();
@@ -125,29 +132,24 @@ public class ReviewImagesActivity extends BaseActivity implements
 
 	@Override
 	protected void onBackClicked() {
-		setResultData();
+		addSelectedImages(getCurrentSelectedImages());
+		Bundle bundle = new Bundle();
+		bundle.putParcelableArrayList(ConstantEntity.RESPONSE_KEY, selectedImages);
+		switchFragment(0, bundle);
 	}
-
-	@Override
-	protected void onChooseOkBtnClicked() {
-		setResultData();
-		SelectMultImagesActivity.INSTANCE.finish();
-	}
-
-	@Override
-	public void onPageScrollStateChanged(int arg0) {
-
-	}
-
-	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-	}
-
+	
 	@Override
 	public void onPageSelected(int position) {
 		currentPosition = position;
 		setChooseStatus(currentImages.get(position).isChecked());
 		setTitleText(position);
 	}
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+	}
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+	}
+
+
 }
