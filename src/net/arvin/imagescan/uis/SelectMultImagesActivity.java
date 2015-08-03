@@ -33,7 +33,7 @@ public class SelectMultImagesActivity extends FragmentActivity {
 		INSTANCE = this;
 		fragmentManager = getSupportFragmentManager();
 		Bundle bundle = getIntent().getExtras();
-		setPageSelection(1, bundle);
+		setPageSelection(0, bundle);
 	}
 
 	private void initImageLoader(Context context) {

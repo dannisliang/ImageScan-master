@@ -50,9 +50,9 @@ public abstract class BaseFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_launcher)
-				.showImageForEmptyUri(R.drawable.ic_launcher)
-				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
+				.showImageOnLoading(R.drawable.is_take_photo)
+				.showImageForEmptyUri(R.drawable.is_take_photo)
+				.showImageOnFail(R.drawable.is_take_photo).cacheInMemory(true)
 				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565).build();
 	}
 
